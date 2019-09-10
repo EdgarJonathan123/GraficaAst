@@ -99,6 +99,8 @@ class NodoAST *nodito;
 %type<nodito> FOR_COND;
 %type<nodito> E;
 %type<nodito> A;
+%type<nodito> LISTA_VALORES;
+%type<nodito> VALORES;
 
 
 
@@ -192,7 +194,7 @@ REPETIR: tk_repetir pari CONT_VALOR pard llavei LISTA_CUERPO llaved
              }
        | tk_repetir pari CONT_VALOR pard llavei              llaved
              {
-                NodoAST *nod = new NodoAST(yylineno+1, columna+1,"REPETIR","");
+                NodoAST *nod = new NodoAST(yylineno+1, columna+1,"REPETIR1","");
                 nod->add(*$3);
                 $$=nod;
              }
@@ -222,7 +224,7 @@ FOR:  tk_para pari FOR_COND  CONT_VALOR puntocoma OPERACION pard llavei LISTA_CU
         }
      |tk_para pari FOR_COND  CONT_VALOR puntocoma OPERACION pard llavei              llaved
         {
-                NodoAST *nod = new NodoAST(yylineno+1, columna+1,"FOR","");
+                NodoAST *nod = new NodoAST(yylineno+1, columna+1,"FOR_VACIO","");
                 nod->add(*$3); 
                 nod->add(*$4);
                 nod->add(*$6);
@@ -233,11 +235,15 @@ FOR:  tk_para pari FOR_COND  CONT_VALOR puntocoma OPERACION pard llavei LISTA_CU
 
 FOR_COND: ASIGNACION
           {
-            $$=$1;
+            NodoAST *nod = new NodoAST(yylineno+1, columna+1,"ASIG","");
+            nod->add(*$1);
+            $$=nod;
           } 
         | DECLARACION
           { 
-            $$=$1;
+            NodoAST *nod = new NodoAST(yylineno+1, columna+1,"DECLARA","");
+            nod->add(*$1);
+            $$=nod;
           } 
 ;
 
@@ -255,7 +261,7 @@ LISTA_MOSTRAR: LISTA_MOSTRAR MOSTRAR
 ;
 
 
-MOSTRAR: tk_show pari CONT_VALOR coma CONT_VALOR pard puntocoma
+MOSTRAR: tk_show pari CONT_VALOR coma LISTA_VALORES pard puntocoma
           {
                 NodoAST *nod = new NodoAST(yylineno+1, columna+1,"SHOW","");
                 nod->add(*$3); 
@@ -279,12 +285,30 @@ LISTA_IMPRIMIR: LISTA_IMPRIMIR IMPRIMIR
                   }           
 ;
 
-IMPRIMIR: tk_imprimir pari CONT_VALOR pard puntocoma
+IMPRIMIR: tk_imprimir pari LISTA_VALORES pard puntocoma
            {
                 NodoAST *nod = new NodoAST(yylineno+1, columna+1,"IMPRIMIR",""); 
                 nod->add(*$3);
                 $$=nod;
            }
+;
+
+
+
+LISTA_VALORES: LISTA_VALORES suma VALORES
+                  {
+                    $$=$1;
+                    $$->add(*$3);
+                  }
+              | VALORES
+                  {
+                    $$ = new NodoAST(yylineno+1, columna+1,"LISTA_VALORES","");
+                    $$->add(*$1);
+                  } 
+;
+
+
+VALORES: VALOR
 ;
 
 LISTA_ASIGNACION: LISTA_ASIGNACION ASIGNACION
@@ -298,6 +322,7 @@ LISTA_ASIGNACION: LISTA_ASIGNACION ASIGNACION
                     $$->add(*$1);
                   }
 ;
+
 
 ASIGNACION: LISTA_VAR  puntocoma
             {
@@ -613,7 +638,7 @@ SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO  ELSE
        } 
     |tk_if pari CONT_VALOR pard llavei   ELSE  
     {
-          NodoAST *nod = new NodoAST(yylineno+1, columna+1,"IF",""); 
+          NodoAST *nod = new NodoAST(yylineno+1, columna+1,"IF_SINCUERPO",""); 
           nod->add(*$3); 
           nod->add(*$6);
           $$=nod;
@@ -635,7 +660,7 @@ ELSE: llaved tk_else SI
       } 
     |  llaved  tk_else llavei  llaved
       {
-          NodoAST *nod = new NodoAST(yylineno+1, columna+1,"ELSE_VACIO :v","");
+          NodoAST *nod = new NodoAST(yylineno+1, columna+1,"ELSE_VACIO","");
           $$=nod;
       } 
     | llaved

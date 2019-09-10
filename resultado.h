@@ -1,6 +1,7 @@
 #ifndef RESULTADO_H
 #define RESULTADO_H
 #include <qstring.h>
+#include <variables.h>
 
 class Resultado
 {
@@ -11,6 +12,7 @@ public:
     QString valor;
     int linea;
     int columna;
+    //QString variable;
 };
 
 #endif // RESULTADO_H

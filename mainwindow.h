@@ -12,7 +12,8 @@
 #include <graficador.h> // Graficador
 
 #include <QMainWindow>
-#include <primerrecorrido.h>
+#include <variables.h>
+#include <accion.h>
 
 
 extern int yyparse(); //
@@ -47,6 +48,8 @@ private slots:
     void on_actionManual_Tecnico_triggered();
 
     void on_actionManual_Usuario_triggered();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;

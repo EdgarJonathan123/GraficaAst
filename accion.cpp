@@ -13,28 +13,39 @@ accion::accion(){ resultado="";}
 //******************************************************************************
 void accion::init(NodoAST *raiz)
 {
+
+    //limpiar();
     if(raiz->hijos.at(0).tipo_ == LISTA_CUERPO)
     {
 
-        for (int x= 0; x<  raiz->hijos.at(0).hijos.size(); x++)
-        {
-
-            NodoAST lista = raiz->hijos.at(0).hijos.at(x);
-            ListaCuerpo(&lista);
-
-        }
-
-
+        NodoAST lista = raiz->hijos.at(0);
+        ListaCuerpo(&lista);
 
     }
 
 }
 //******************************************************************************
-//*************************** LIsta_CUerpo ************************************
+//*************************** LIsta_CUerpo *************************************
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-void accion::ListaCuerpo(NodoAST*raiz)
+
+void accion::ListaCuerpo(NodoAST *raiz){
+
+    for (int x= 0; x<  raiz->hijos.size(); x++)
+    {
+        NodoAST cuerpo = raiz->hijos.at(x);
+        Cuerpo(&cuerpo);
+    }
+
+}
+
+//******************************************************************************
+//*************************** CUerpo *******************************************
+//******************************************************************************
+//******************************************************************************
+//******************************************************************************
+void accion::Cuerpo(NodoAST*raiz)
 {
 
     switch (raiz->tipo_)
@@ -118,7 +129,6 @@ void accion::ListaCuerpo(NodoAST*raiz)
         break;
 
     }
-
 }
 //******************************************************************************
 //*************************** Declaracion ************************************
@@ -136,6 +146,7 @@ void accion::declaracion(NodoAST* raiz)
         NodoAST listId = raiz->hijos.at(1);
         NodoAST tk_valor = raiz->hijos.at(2);
 
+
         int tipo_= tipoDato(&tk_tipo).tipo;
 
         Resultado r1 =contValor(&tk_valor);
@@ -144,7 +155,7 @@ void accion::declaracion(NodoAST* raiz)
 
         QTextStream(stdout) << "Valor: ["+valor+"]" << endl;
 
-        listaId(&listId,tipo_,tipo_valor,valor);
+        declaracionVariable(&listId,tipo_,tipo_valor,valor);
 
     }
         break;
@@ -155,19 +166,37 @@ void accion::declaracion(NodoAST* raiz)
 
         int tipo_= tipoDato(&tk_tipo).tipo;
         QString valor = "null";
-        listaId(&listId,tipo_,tipo_,valor);
+        declaracionVariable(&listId,tipo_,tipo_,valor);
 
     }
         break;
     case DECLARACIONARRAY1:
     {
-        QTextStream(stdout) << "estamos en arr1" << endl;
+        NodoAST tk_tipo = raiz->hijos.at(0);
+        NodoAST listid = raiz->hijos.at(1);
+        NodoAST listdimen  = raiz->hijos.at(2);
+
+        QStringList ListaId = getListaid(&listid);
+        posicion* coor = coordenadas(&listdimen);
+        int tipo = tipoDato(&tk_tipo).tipo;
+
+        declaracionArrayMultidimension(tipo,coor,ListaId);
     }
         break;
     case DECLARACIONARRAY2:
     {
+        NodoAST tk_tipo = raiz->hijos.at(0);
+        NodoAST listid = raiz->hijos.at(1);
+        NodoAST listdimen  = raiz->hijos.at(2);
+        NodoAST ARRAY =raiz->hijos.at(3);
 
-        QTextStream(stdout) << "estamos en arr2" << endl;
+        QStringList ListaId = getListaid(&listid);
+        posicion* coor = coordenadas(&listdimen);
+        int tipo = tipoDato(&tk_tipo).tipo;
+
+        inicializarArrayMulltidimension(tipo,&ARRAY,coor,ListaId);
+
+        // imprimiarMatriz();
 
     }
         break;
@@ -183,44 +212,8 @@ void accion::declaracion(NodoAST* raiz)
 
         if(esEntero(tama)){
             int tamanio = tama.valor.toInt();
-            declaraArray1(tipo_,&fila,tamanio,&listId);
+            InicializarArrayUnaDimension(tipo_,&fila,tamanio,&listId);
         }
-
-
-        /* array1* arr = new array1(INT,5);
-
-       bool estado = arr->anadir(0,"valor cambiado1");
-        bool estado1 = arr->anadir(6,"valor cambiado1");
-
-       if(estado){
-
-        QTextStream(stdout) << "se agrego con exito" << endl;
-       }else{
-
-            QTextStream(stdout) << "no se pudo agregar" << endl;
-       }
-
-       if(estado1){
-
-        QTextStream(stdout) << "se agrego con exito" << endl;
-       }else{
-
-            QTextStream(stdout) << "no se pudo agregar" << endl;
-       }
-       listaarray.insert("id1",arr);
-
-
-        array1* lol = listaarray.value("id1");
-
-        if(lol){
-                QTextStream(stdout) << "cuarlquier otro valor "+lol->obtener(4)<< endl;
-                QTextStream(stdout) << "valorRecuperado "+lol->obtener(7)<< endl;
-        }
-
-        QTextStream(stdout) << "estamos en arr3" << endl;*/
-
-
-
 
     }
         break;
@@ -246,7 +239,7 @@ void accion::asignacion(NodoAST* raiz){
         NodoAST actual =  raiz->hijos.at(x);
         if(actual.hijos.size()>0){
             NodoAST dimen = actual.hijos.first();
-            Dimensiones(&actual , &dimen,tk_valor);
+            AsignacionArreglo(&actual , &dimen,tk_valor);
         }else{
 
             Variable* VariableDeclarada = listaVariables.value(actual.valor);
@@ -287,14 +280,49 @@ void accion::asignacion(NodoAST* raiz){
 //******************************************************************************
 void accion::imprimir(NodoAST* raiz){
 
+    NodoAST LISTA_VALORES =raiz->hijos.at(0);
+
+    resultado+=getValores(&LISTA_VALORES);
 
 }
+
+QString accion::getValores(NodoAST* raiz){
+
+    QString result="";
+    for (int x= 0; x< raiz->hijos.size(); x++)
+    {
+        NodoAST nodo = raiz->hijos.at(x);
+        Resultado r1 =contValor(&nodo);
+        QString valor = r1.valor;
+        result+=valor;
+    }
+
+    result+="\n";
+
+
+    return result;
+}
+
 //******************************************************************************
 //*************************** Mostrar ************************************
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
 void accion::sentenciaMostrar(NodoAST* raiz){
+
+
+    NodoAST LISTA_VALORES =raiz->hijos.at(1);
+    NodoAST TITULO = raiz->hijos.at(0);
+    Resultado r = contValor(&TITULO);
+
+    QString title = r.valor;
+    QString Valores = getValores(&LISTA_VALORES);
+
+
+    alerta mialerta;
+    mialerta.titulo = title;
+    mialerta.contenido =Valores;
+    listaarlerta.append(mialerta);
 
 }
 //******************************************************************************
@@ -303,6 +331,68 @@ void accion::sentenciaMostrar(NodoAST* raiz){
 //******************************************************************************
 //******************************************************************************
 void accion::sentenciaIf(NodoAST* raiz){
+
+
+    switch (raiz->tipo_) {
+
+    case IF:{
+        NodoAST cond = raiz->hijos.at(0);
+        bool    condicion = condIf(&cond);
+
+        if(condicion){
+            NodoAST cuerpo = raiz->hijos.at(1);
+            ListaCuerpo(&cuerpo);
+
+        }else {
+
+            NodoAST entonces = raiz->hijos.at(2);
+            sentenciaElse(&entonces);
+        }
+
+        break;
+    }
+    case IF_SIN_CUERPO :{
+
+        NodoAST cond = raiz->hijos.at(0);
+        bool    condicion = condIf(&cond);
+
+        if(condicion){
+
+        }else {
+            NodoAST entonces = raiz->hijos.at(1);
+            sentenciaElse(&entonces);
+
+        }
+
+        break;
+    }
+
+    }
+
+
+}
+
+void accion::sentenciaElse(NodoAST *raiz){
+
+
+    switch (raiz->tipo_) {
+    case ELSE:{
+
+        NodoAST cuerpo = raiz->hijos.at(0);
+        ListaCuerpo(&cuerpo);
+
+        break;
+    }
+    case ELSE_IF: {
+
+        NodoAST sentIF = raiz->hijos.at(0);
+        sentenciaIf(&sentIF);
+        break;
+    }
+
+    }
+
+
 
 
 }
@@ -314,7 +404,64 @@ void accion::sentenciaIf(NodoAST* raiz){
 void accion::sentenciaFor(NodoAST* raiz){
 
 
+    switch (raiz->tipo_) {
+
+    case FOR:{
+
+        NodoAST Forcond = raiz->hijos.at(0);
+        NodoAST cond = raiz->hijos.at(1);
+        NodoAST actualizacion = raiz->hijos.at(2);
+        NodoAST listaCuerpo = raiz->hijos.at(3);
+        forCond(&Forcond);
+
+        while (condIf(&cond)){
+
+            ListaCuerpo(&listaCuerpo);
+            QTextStream(stdout) << "Estamos en el bucle" << endl;
+            contValor(&actualizacion);
+
+        }
+
+
+        break;
+    }
+    case FOR_VACIO:{
+
+        break;
+    }
+
+
+    }
+
+
+
 }
+
+
+
+
+void accion::forCond(NodoAST* raiz){
+
+    switch (raiz->tipo_) {
+    case ASIG:{
+
+        NodoAST asig = raiz->hijos.at(0);
+        asignacion(&asig);
+        break;
+    }
+    case DECLARA:{
+        NodoAST declara = raiz->hijos.at(0);
+        declaracion(&declara);
+        break;
+    }
+
+
+    }
+
+}
+
+
+
 //******************************************************************************
 //*************************** repetir ************************************
 //******************************************************************************
@@ -322,6 +469,33 @@ void accion::sentenciaFor(NodoAST* raiz){
 //******************************************************************************
 void accion::sentendiaRepetir(NodoAST* raiz){
 
+
+    switch (raiz->tipo_) {
+
+    case REPETIR_VACIO:{
+
+        break;
+    }
+    case REPETIR_CUERPO:{
+
+        NodoAST   num = raiz->hijos.at(0);
+        Resultado tama = OPERACION(&num);
+
+        if(esEntero(tama)){
+            int tamanio = tama.valor.toInt();
+            NodoAST listaCuepo = raiz->hijos.at(1);
+
+            for (int i=0;i<tamanio;i++) {
+                ListaCuerpo(&listaCuepo);
+            }
+        }
+
+
+
+        break;
+    }
+
+    }
 
 }
 //******************************************************************************
@@ -359,8 +533,6 @@ Resultado accion::tipoDato(NodoAST* raiz){
         break;
     }
 
-
-
     return r;
 }
 //******************************************************************************
@@ -368,7 +540,7 @@ Resultado accion::tipoDato(NodoAST* raiz){
 //******************************************************************************
 //******************************************************************************
 //******************************************************************************
-void accion::listaId(NodoAST *raiz, int tipo, int tipo_valor, QString valor){
+void accion::declaracionVariable(NodoAST *raiz, int tipo, int tipo_valor, QString valor){
 
     for (int x= 0; x< raiz->hijos.size(); x++)
     {
@@ -377,11 +549,22 @@ void accion::listaId(NodoAST *raiz, int tipo, int tipo_valor, QString valor){
 
                 NodoAST nodo = raiz->hijos.at(x);
                 listaVariables.insert(nodo.valor,new Variable(tipo,valor));
-                QTextStream(stdout) << "Declaracion Exitosa" << endl;
 
             }else{
 
-                resultado+="No se puede declarar  el tipo de dato no coincide con el valor";
+                if(tipo==DOUBLE){
+
+                    if(tipo_valor==DOUBLE || tipo_valor == INT){
+                        NodoAST nodo = raiz->hijos.at(x);
+                        listaVariables.insert(nodo.valor,new Variable(tipo,valor));
+                    }else{
+
+                         resultado+="No se puede declarar  el tipo de dato no coincide con el valor";
+                    }
+
+                }
+
+
             }
 
 
@@ -3654,6 +3837,10 @@ Resultado accion::OPERACION(NodoAST* raiz){
             r.tipo =INT;
             int result = op1.valor.toInt()+1;
             r.valor =QString::number(result);
+
+            aumentoVar(r);
+
+
             break;
         }
         case STRING:{
@@ -3667,12 +3854,14 @@ Resultado accion::OPERACION(NodoAST* raiz){
             r.tipo =DOUBLE;
             double result = op1.valor.toDouble()+1;
             r.valor =QString::number(result);
+            aumentoVar(r);
             break;
         }
         case CHAR:{
             r.tipo =CHAR;
             int result =op1.valor.at(0).toLatin1()+1;
             r.valor =QString::number(result);
+            aumentoVar(r);
             break;
         }
         case BOOL:{
@@ -3682,7 +3871,6 @@ Resultado accion::OPERACION(NodoAST* raiz){
             break;
         }
         default:{
-
 
             r.tipo =ERROR;
             r.valor="null";
@@ -3706,6 +3894,7 @@ Resultado accion::OPERACION(NodoAST* raiz){
             r.tipo =INT;
             int result = op1.valor.toInt()-1;
             r.valor =QString::number(result);
+            aumentoVar(r);
             break;
         }
         case STRING:{
@@ -3719,12 +3908,14 @@ Resultado accion::OPERACION(NodoAST* raiz){
             r.tipo =DOUBLE;
             double result = op1.valor.toDouble()-1;
             r.valor =QString::number(result);
+            aumentoVar(r);
             break;
         }
         case CHAR:{
             r.tipo =CHAR;
             int result =op1.valor.at(0).toLatin1()-1;
             r.valor =QString::number(result);
+            aumentoVar(r);
             break;
         }
         case BOOL:{
@@ -3781,6 +3972,8 @@ Resultado accion::VALOR(NodoAST* raiz){
         if(VariableDeclarada!= nullptr){
             r.tipo =VariableDeclarada->tipo_;
             r.valor =VariableDeclarada->valor;
+            VariableActual = raiz->valor;
+
 
         }else{
 
@@ -3829,7 +4022,14 @@ Resultado accion::VALOR(NodoAST* raiz){
     {
         r.tipo = ARREGLO;
 
-        std::cout<<"aun estamos trabajando en arreglo capo pronto estara disponible :v"<<std::endl;
+        NodoAST listDimen = raiz->hijos.at(0);
+        posicion* pos = coordenadas(&listDimen);
+
+        Resultado result = obtenerValorArray(raiz,pos);
+
+        r.tipo = result.tipo;
+        r.valor = result.valor;
+
         break;
     }
 
@@ -3903,25 +4103,47 @@ bool accion::validaArray(NodoAST *raiz, Resultado r){
             return false;
         }
 
-    }
-
-}
-bool accion::validaPos(QString valor, int i, Resultado r){
-
-
-    if(valor=="vacio")
-    {
-        return true;
     }else{
-        Msgerror(r," Posicion ["+QString::number(i)+"] esta fuera de rango");
+
         return false;
     }
+
 }
+
+bool accion::esEntero(Resultado r){
+
+
+    if(r.tipo ==INT){
+
+        return true;
+    }else{
+        Msgerror(r,"El tamanio del vector no es un entero");
+        return  false;
+    }
+
+}
+
+void accion::aumentoVar(Resultado r){
+
+    try {
+
+        Variable* varActual = new Variable(r.tipo,r.valor);
+        listaVariables.insert(VariableActual,varActual);
+
+
+    } catch (int e) {
+
+    }
+
+
+
+}
+
 //******************************************************************************
 //**************** DImensiones ****************************************
 //******************************************************************************
 //******************************************************************************
-void accion::Dimensiones(NodoAST *raiz, NodoAST* dimension,Resultado tk_valor){
+void accion::AsignacionArreglo(NodoAST *raiz, NodoAST* dimension,Resultado tk_valor){
 
     int tamanio = dimension->hijos.size();
 
@@ -3942,7 +4164,36 @@ void accion::Dimensiones(NodoAST *raiz, NodoAST* dimension,Resultado tk_valor){
         break;
     }
     case 2:{
-        resultado+="estamos trabajando en vectores de dos dimensiones!!!";
+        posicion* pos = coordenadas(dimension);
+
+        if(pos){
+
+            array2* arr = listaarray2.value(raiz->valor);
+
+            //verficamos si exite el array
+            if(arr){
+
+                QString valor = arr->obtener(pos->x, pos->y);
+
+                //verificamos si no  nos pasamos de posicion
+                if(valor!="vacio")
+
+                    arr->anadir(pos->x,pos->y,tk_valor.valor);
+
+
+            }else{
+
+                QString x = QString::number(pos->x);
+                QString y = QString::number(pos->y);
+                resultado+=" Posicion ["+x+"]["+y+"] esta fuera de rango\n";
+
+            }
+
+        }else{
+            resultado+=" No existe el array ["+raiz->valor+"]\n";
+        }
+
+
 
         break;
     }
@@ -3966,7 +4217,7 @@ void accion::Dimensiones(NodoAST *raiz, NodoAST* dimension,Resultado tk_valor){
 //**************** declarArray1 ****************************************
 //******************************************************************************
 //******************************************************************************
-void  accion::declaraArray1(int tipo, NodoAST* fila, int tamanio, NodoAST* listaid ){
+void  accion::InicializarArrayUnaDimension(int tipo, NodoAST* fila, int tamanio, NodoAST* listaid ){
 
 
 
@@ -3997,11 +4248,13 @@ void  accion::declaraArray1(int tipo, NodoAST* fila, int tamanio, NodoAST* lista
                 if(tipo == actual.tipo){
                     arr->anadir(y,actual.valor);
 
+                    //agregamos el arreglo al final de todos los valores del arreglo
                     if(y == cont.size()-1){
                         listaarray.insert(id.valor,arr);
                     }
 
                 }else {
+
                     if(x==0){
 
                         Msgerror(actual," EL tipo  de la celda ["+QString::number(y)+"] no es compatible con el tipo declarado");
@@ -4026,19 +4279,388 @@ void  accion::declaraArray1(int tipo, NodoAST* fila, int tamanio, NodoAST* lista
 
 }
 //******************************************************************************
-//**************** Es un entero ?****************************************
+//*******Declaracion de arrays multidimensionales*******************************
 //******************************************************************************
 //******************************************************************************
-bool accion::esEntero(Resultado r){
+posicion*  accion::coordenadas(NodoAST* ListaDimension){
 
+    int dimen = ListaDimension->hijos.size();
 
-    if(r.tipo ==INT){
+    //obtenes mos la dimension del array declarado
+    switch (dimen) {
 
-        return true;
-    }else{
-        Msgerror(r,"El tamanio del vector no es un entero");
-        return  false;
+    case 1:{
+
+        NodoAST tam = ListaDimension->hijos.at(0);//si es de una dimension obtenemos su hijo
+        Resultado posx = OPERACION(&tam);// obtenemos el resultado de la operacion correspondientes
+
+        // verficamos si la operacion nos arroja un entero
+        if(esEntero(posx)){
+            int tamaniox = posx.valor.toInt();
+
+            return new posicion(dimen,tamaniox);
+
+        }else {
+            resultado+="el valor de la posicion no es un entero";
+        }
+
+        break;
     }
+    case 2:{
+
+        NodoAST tamx = ListaDimension->hijos.at(0);//si es de una dimension obtenemos su hijo
+        Resultado posx = OPERACION(&tamx);// obtenemos el resultado de la operacion correspondientes
+        NodoAST tamy = ListaDimension->hijos.at(1);//si es de una dimension obtenemos su hijo
+        Resultado posy = OPERACION(&tamy);// obtenemos el resultado de la operacion correspondientes
+
+        // verficamos si la operacion nos arroja un entero
+        if(esEntero(posx) && esEntero(posy)){
+            int tamaniox = posx.valor.toInt();
+            int tamanioy = posy.valor.toInt();
+
+            return new posicion(dimen,tamaniox,tamanioy);
+        }else{
+            resultado+="el valor de la posicion no es un entero";
+        }
+
+        break;
+    }
+    case 3:{
+        NodoAST tamx = ListaDimension->hijos.at(0);//si es de una dimension obtenemos su hijo
+        Resultado posx = OPERACION(&tamx);// obtenemos el resultado de la operacion correspondientes
+        NodoAST tamy = ListaDimension->hijos.at(1);//si es de una dimension obtenemos su hijo
+        Resultado posy = OPERACION(&tamy);// obtenemos el resultado de la operacion correspondientes
+        NodoAST tamz = ListaDimension->hijos.at(2);//si es de una dimension obtenemos su hijo
+        Resultado posz = OPERACION(&tamz);// obtenemos el resultado de la operacion correspondientes
+
+        // verficamos si la operacion nos arroja un entero
+        if(esEntero(posx) && esEntero(posy)){
+            int tamaniox = posx.valor.toInt();
+            int tamanioy = posy.valor.toInt();
+            int tamanioz = posz.valor.toInt();
+
+            return new posicion(dimen,tamaniox,tamanioy,tamanioz);
+        }else{
+            resultado+="el valor de la posicion no es un entero";
+        }
+        break;
+    }
+    default:{
+
+        resultado+="No puedes trabajar con arrays de mas de tres dimensiones";
+        return nullptr;
+    }
+    }
+
+    return nullptr;
+}
+QStringList accion::getListaid(NodoAST* ListaId){
+
+    int tamanio = ListaId->hijos.size();
+    QStringList result = QStringList();
+
+    for(int i=0; i< tamanio; i++){
+
+        NodoAST actual = ListaId->hijos.at(i);
+        QString id = actual.valor;
+        result.append(id);
+    }
+
+
+    return result;
+
+}
+void accion::declaracionArrayMultidimension(int  tipo, posicion* pos, QStringList ListaId){
+
+
+    switch (pos->getdimen()) {
+
+    case 1:{
+
+        int tamanio = ListaId.size();
+
+        for (int i=0;i< tamanio  ;i++) {
+
+            QString id = ListaId.at(i);
+            array1* arr = new array1(tipo,pos->x);
+            listaarray.insert(id,arr);
+
+            if(i==tamanio-1){
+
+                QTextStream(stdout) << "Arreglo creado con exito" << endl;
+            }
+
+        }
+
+        break;
+    }
+    case 2:  {
+
+        int tamanio = ListaId.size();
+
+        for (int i=0;i< tamanio  ;i++) {
+
+            QString id = ListaId.at(i);
+            array2* arr = new array2(tipo,pos->x, pos->y);
+            listaarray2.insert(id,arr);
+
+            if(i==tamanio-1){
+
+                QTextStream(stdout) << "Arreglo  de dos dimensiones creado " << endl;
+
+            }
+
+
+        }
+
+
+
+        break;
+    }
+    case 3:{
+
+        break;
+    }
+    }
+
+}
+void accion::inicializarArrayMulltidimension(int tipo, NodoAST* array, posicion* pos, QStringList ListaId ){
+
+
+    int tamFila = array->hijos.size();
+    array2* arr = new array2(tipo,pos->x, pos->y);
+
+
+    if(tamFila == pos->x){
+
+        for (int i =0 ;i<tamFila;i++) {
+
+            NodoAST FilaActual = array->hijos.at(i);
+            int tamCol = FilaActual.hijos.size();
+
+            if(tamCol == pos->y){
+
+                for (int j=0;j<tamCol;j++) {
+
+                    NodoAST ColActual = FilaActual.hijos.at(j);
+
+                    Resultado r = Resultado();
+                    r = contValor(&ColActual);
+
+                    if(tipo == r.tipo){
+                        arr->anadir(i,j,r.valor);
+
+                    }else{
+
+                        resultado +=  "La posicion  ("+QString::number(i)+","+QString::number(j)+") no coincide con el tipo declarado \n";
+                    }
+
+
+                }
+
+            }else{
+
+                resultado+="EL numero de columnas de la Fila["+QString::number(i)+"] no es el correcto\n";
+            }
+
+        }
+
+
+    }else{
+
+        resultado+="Las numero de Filas no es el correcto\n";
+
+    }
+
+
+    for (int z=0;z<ListaId.size();z++) {
+
+        QString id = ListaId.at(z);
+
+        listaarray2.insert(id,arr);
+        QTextStream(stdout) << "arreglo inicializo fila = "+QString::number(z)+"" << endl;
+
+
+
+    }
+
+
+
+}
+
+//******************************************************************************
+//****** Imprimir Matriz********************************************************
+//******************************************************************************
+//******************************************************************************
+void accion::imprimiarMatriz(){
+
+    QHash<QString,array2*>::iterator i;
+    for (i = listaarray2.begin(); i != listaarray2.end(); ++i){
+
+        QString id = i.key();
+
+        QTextStream(stdout) << "id: " +id+"\n"<< endl;
+
+        array2* arr=  arr= i.value();
+
+        if(arr){
+
+            for (int i=0;i<arr->getTamanio();i++) {
+
+                QString valor = arr->obtener(i);
+                coor coordenada = arr->toCoordenadas(i);
+                QString x = QString::number(coordenada.x);
+                QString y = QString::number(coordenada.y);
+
+                QTextStream(stdout) << "id["+x+"]["+y+"]= "+valor+""<< endl;
+
+
+            }
+
+
+        }else{
+
+            QTextStream(stdout) << "la variable no contiene nada men\n"<< endl;
+        }
+
+
+    }
+
+
+}
+
+//******************************************************************************
+//****** Limpiar ***************************************************************
+//******************************************************************************
+//******************************************************************************
+void accion::limpiar(){
+    listaarray.clear();
+    listaarray2.clear();
+    listaVariables.clear();
+
+}
+
+//******************************************************************************
+//******  Obtner el valor de un array ******************************************
+//******************************************************************************
+//******************************************************************************
+Resultado accion::obtenerValorArray(NodoAST *identificador, posicion *pos){
+
+
+    Resultado r =Resultado();
+    r.linea = identificador->linea;
+    r.columna = identificador->columna;
+
+
+    switch (pos->getdimen()) {
+
+    case 1:{
+
+        QString id =identificador->valor;
+        array1* arr = listaarray.value(id);
+
+        if(arr){
+
+            QString valor = arr->obtener(pos->x);
+
+            if(valor!="vacio"){
+
+                r.valor = valor;
+                r.tipo = arr->tipo;
+
+
+            }else{
+                r.tipo=ERROR;
+                r.valor="null";
+                Msgerror(r," La posicion del arreglo  "+id+" esta fuera del rango \n");
+            }
+        }else{
+            r.tipo=ERROR;
+            r.valor="null";
+            Msgerror(r," El arreglo: "+id+" no ha sido declarado \n");
+        }
+
+        break;
+    }
+    case 2:{
+
+
+        QString id =identificador->valor;
+        array2* arr = listaarray2.value(id);
+
+        if(arr){
+
+            QString valor = arr->obtener(pos->x, pos->y);
+
+            if(valor!="vacio"){
+
+                r.valor = valor;
+                r.tipo = arr->tipo;
+
+
+            }else{
+                r.tipo=ERROR;
+                r.valor="null";
+                Msgerror(r," La posicion del arreglo  "+id+" esta fuera del rango \n");
+            }
+        }else{
+
+            r.tipo=ERROR;
+            r.valor="null";
+            Msgerror(r," El arreglo: "+id+" no ha sido declarado \n");
+        }
+
+        break;
+
+
+    }
+
+    default:{
+
+        r.tipo=ERROR;
+        r.valor="null";
+        break;
+    }
+
+
+    }
+
+
+
+
+    return r;
+
+}
+//******************************************************************************
+//******  Obtner el valor de un array ******************************************
+//******************************************************************************
+//******************************************************************************
+bool accion::condIf(NodoAST* Condicion){
+
+
+
+    Resultado r = contValor(Condicion);
+
+    if(r.tipo==BOOL)
+    {
+
+        if(condBool(r.valor)){
+
+            return true;
+        }else{
+
+            return false;
+
+        }
+
+
+    }else{
+
+        Msgerror(r,"La condicion  no es de tipo booleano");
+
+        return false;
+    }
+
 
 }
 

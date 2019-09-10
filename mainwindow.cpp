@@ -152,6 +152,22 @@ void MainWindow::on_pushButton_clicked()
         accion * interprete = new accion();
         interprete->init(raiz);
         ui->textoConsola->setPlainText(interprete->resultado);
+
+         QList<alerta> listaalert = interprete->listaarlerta;
+
+         for (int i=0;i<listaalert.size();i++) {
+
+             alerta alert =listaalert.at(i);
+
+            QMessageBox::information(this,alert.titulo,alert.contenido);
+
+         }
+
+
+
+
+
+
     }
 
 }
@@ -165,4 +181,9 @@ void MainWindow::on_actionManual_Tecnico_triggered()
 void MainWindow::on_actionManual_Usuario_triggered()
 {
      system("xdg-open   /home/jonathan/Escritorio/Manuales/ManualUsuario.pdf");
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+
 }

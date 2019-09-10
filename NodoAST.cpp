@@ -83,6 +83,24 @@ int NodoAST::getTipo()
     if(this->tipo=="menos"){return 40;}
     if(this->tipo=="aumento"){return 41;}
     if(this->tipo=="decremento"){return 42;}
+    if(this->tipo=="LISTA_VALORES"){return 43;}
+
+    //--Para la sentencia if
+    if(this->tipo=="IF"){return 44;}
+    if(this->tipo=="IF_SINCUERPO"){return 45;}
+    if(this->tipo=="ELSE_IF"){return 46;}
+    if(this->tipo=="ELSE"){return 47;}
+
+    //---Para la sentencia Repetir
+    if(this->tipo=="REPETIR"){return 48;}
+    if(this->tipo=="REPETIR1"){return 49;}
+
+    //----para el disque ciclo for
+    if(this->tipo=="ASIG"){return 50;}
+    if(this->tipo=="DECLARA"){return 51;}
+    if(this->tipo=="FOR"){return 52;}
+    if(this->tipo=="FOR_VACIO"){return 53;}
+
 
 
     //-- saltar dos numeros para validar posicion y array

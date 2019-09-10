@@ -12,11 +12,11 @@ Estado 37 conflictos: 5 desplazamiento/reducción
 Estado 45 conflictos: 1 desplazamiento/reducción
 Estado 50 conflictos: 1 desplazamiento/reducción
 Estado 52 conflictos: 2 desplazamiento/reducción
-Estado 112 conflictos: 2 desplazamiento/reducción
-Estado 113 conflictos: 2 desplazamiento/reducción
 Estado 114 conflictos: 2 desplazamiento/reducción
 Estado 115 conflictos: 2 desplazamiento/reducción
 Estado 116 conflictos: 2 desplazamiento/reducción
+Estado 117 conflictos: 2 desplazamiento/reducción
+Estado 118 conflictos: 2 desplazamiento/reducción
 
 
 Gramática
@@ -54,139 +54,144 @@ Gramática
    21 LISTA_MOSTRAR: LISTA_MOSTRAR MOSTRAR
    22              | MOSTRAR
 
-   23 MOSTRAR: tk_show pari CONT_VALOR coma CONT_VALOR pard puntocoma
+   23 MOSTRAR: tk_show pari CONT_VALOR coma LISTA_VALORES pard puntocoma
 
    24 LISTA_IMPRIMIR: LISTA_IMPRIMIR IMPRIMIR
    25               | IMPRIMIR
 
-   26 IMPRIMIR: tk_imprimir pari CONT_VALOR pard puntocoma
+   26 IMPRIMIR: tk_imprimir pari LISTA_VALORES pard puntocoma
 
-   27 LISTA_ASIGNACION: LISTA_ASIGNACION ASIGNACION
-   28                 | ASIGNACION
+   27 LISTA_VALORES: LISTA_VALORES suma VALORES
+   28              | VALORES
 
-   29 ASIGNACION: LISTA_VAR puntocoma
+   29 VALORES: VALOR
 
-   30 LISTA_VAR: LISTA_VAR tk_igual CONT_VALOR
-   31          | CONT_VALOR
+   30 LISTA_ASIGNACION: LISTA_ASIGNACION ASIGNACION
+   31                 | ASIGNACION
 
-   32 LISTA_DECLARACION: LISTA_DECLARACION DECLARACION
-   33                  | DECLARACION
+   32 ASIGNACION: LISTA_VAR puntocoma
 
-   34 DECLARACION: TIPO_DATO LISTA_ID tk_igual CONT_VALOR puntocoma
-   35            | TIPO_DATO LISTA_ID puntocoma
-   36            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION puntocoma
-   37            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
-   38            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
+   33 LISTA_VAR: LISTA_VAR tk_igual CONT_VALOR
+   34          | CONT_VALOR
 
-   39 ARRAY: ARRAY coma llavei LISTA_FILA llaved
-   40      | llavei LISTA_FILA llaved
+   35 LISTA_DECLARACION: LISTA_DECLARACION DECLARACION
+   36                  | DECLARACION
 
-   41 LISTA_FILA: LISTA_FILA coma CONT_VALOR
-   42           | CONT_VALOR
+   37 DECLARACION: TIPO_DATO LISTA_ID tk_igual CONT_VALOR puntocoma
+   38            | TIPO_DATO LISTA_ID puntocoma
+   39            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION puntocoma
+   40            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
+   41            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
 
-   43 LISTA_DIMENSION: LISTA_DIMENSION cori OPERACION cord
-   44                | cori OPERACION cord
+   42 ARRAY: ARRAY coma llavei LISTA_FILA llaved
+   43      | llavei LISTA_FILA llaved
 
-   45 TIPO_DATO: tk_string
-   46          | tk_bool
-   47          | tk_int
-   48          | tk_double
-   49          | tk_char
+   44 LISTA_FILA: LISTA_FILA coma CONT_VALOR
+   45           | CONT_VALOR
 
-   50 LISTA_ID: LISTA_ID coma identificador
-   51         | identificador
+   46 LISTA_DIMENSION: LISTA_DIMENSION cori OPERACION cord
+   47                | cori OPERACION cord
 
-   52 CONT_VALOR: A
+   48 TIPO_DATO: tk_string
+   49          | tk_bool
+   50          | tk_int
+   51          | tk_double
+   52          | tk_char
 
-   53 A: A tk_and A
-   54  | A tk_or A
-   55  | A tk_mayorque A
-   56  | A tk_menorque A
-   57  | A tk_mayorigual A
-   58  | A tk_menorigual A
-   59  | A tk_igualacion A
-   60  | A tk_diferenciacion A
-   61  | pari A pard
-   62  | OPERACION
+   53 LISTA_ID: LISTA_ID coma identificador
+   54         | identificador
 
-   63 OPERACION: E
+   55 CONT_VALOR: A
 
-   64 E: E suma E
-   65  | E menos E
-   66  | E multi E
-   67  | E division E
-   68  | E potencia E
-   69  | menos E
-   70  | pari E pard
-   71  | E aumento
-   72  | E decremento
-   73  | VALOR
+   56 A: A tk_and A
+   57  | A tk_or A
+   58  | A tk_mayorque A
+   59  | A tk_menorque A
+   60  | A tk_mayorigual A
+   61  | A tk_menorigual A
+   62  | A tk_igualacion A
+   63  | A tk_diferenciacion A
+   64  | pari A pard
+   65  | OPERACION
 
-   74 VALOR: identificador
-   75      | cadena
-   76      | entero
-   77      | decimal
-   78      | booleano
-   79      | caracter
-   80      | identificador LISTA_DIMENSION
+   66 OPERACION: E
 
-   81 LISTA_IF: LISTA_IF SI
-   82         | SI
+   67 E: E suma E
+   68  | E menos E
+   69  | E multi E
+   70  | E division E
+   71  | E potencia E
+   72  | menos E
+   73  | pari E pard
+   74  | E aumento
+   75  | E decremento
+   76  | VALOR
 
-   83 SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO ELSE
-   84   | tk_if pari CONT_VALOR pard llavei ELSE
+   77 VALOR: identificador
+   78      | cadena
+   79      | entero
+   80      | decimal
+   81      | booleano
+   82      | caracter
+   83      | identificador LISTA_DIMENSION
 
-   85 ELSE: llaved tk_else SI
-   86     | llaved tk_else llavei LISTA_CUERPO llaved
-   87     | llaved tk_else llavei llaved
-   88     | llaved
+   84 LISTA_IF: LISTA_IF SI
+   85         | SI
+
+   86 SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO ELSE
+   87   | tk_if pari CONT_VALOR pard llavei ELSE
+
+   88 ELSE: llaved tk_else SI
+   89     | llaved tk_else llavei LISTA_CUERPO llaved
+   90     | llaved tk_else llavei llaved
+   91     | llaved
 
 
 Terminales con las reglas donde aparecen
 
 $end (0) 0
 error (256)
-tk_int (258) 47
-tk_double (259) 48
-tk_bool (260) 46
-tk_char (261) 49
-tk_string (262) 45
+tk_int (258) 50
+tk_double (259) 51
+tk_bool (260) 49
+tk_char (261) 52
+tk_string (262) 48
 tk_not (263)
-tk_igual (264) 30 34 37 38
-tk_menorque (265) 56
-tk_mayorque (266) 55
-tk_or (267) 54
-tk_and (268) 53
-tk_igualacion (269) 59
-tk_diferenciacion (270) 60
-tk_menorigual (271) 58
-tk_mayorigual (272) 57
-aumento (273) 71
-decremento (274) 72
-cori (275) 43 44
-cord (276) 43 44
-coma (277) 23 39 41 50
-identificador (278) 50 51 74 80
-entero (279) 76
-decimal (280) 77
-caracter (281) 79
-booleano (282) 78
-cadena (283) 75
-pari (284) 13 14 17 18 23 26 61 70 83 84
-pard (285) 13 14 17 18 23 26 61 70 83 84
-suma (286) 64
-menos (287) 65 69
-multi (288) 66
-division (289) 67
-potencia (290) 68
-puntocoma (291) 17 18 23 26 29 34 35 36 37 38
-llavei (292) 1 13 14 17 18 37 38 39 40 83 84 86 87
-llaved (293) 1 13 14 17 18 37 38 39 40 85 86 87 88
-tk_arreglo (294) 36 37 38
+tk_igual (264) 33 37 40 41
+tk_menorque (265) 59
+tk_mayorque (266) 58
+tk_or (267) 57
+tk_and (268) 56
+tk_igualacion (269) 62
+tk_diferenciacion (270) 63
+tk_menorigual (271) 61
+tk_mayorigual (272) 60
+aumento (273) 74
+decremento (274) 75
+cori (275) 46 47
+cord (276) 46 47
+coma (277) 23 42 44 53
+identificador (278) 53 54 77 83
+entero (279) 79
+decimal (280) 80
+caracter (281) 82
+booleano (282) 81
+cadena (283) 78
+pari (284) 13 14 17 18 23 26 64 73 86 87
+pard (285) 13 14 17 18 23 26 64 73 86 87
+suma (286) 27 67
+menos (287) 68 72
+multi (288) 69
+division (289) 70
+potencia (290) 71
+puntocoma (291) 17 18 23 26 32 37 38 39 40 41
+llavei (292) 1 13 14 17 18 40 41 42 43 86 87 89 90
+llaved (293) 1 13 14 17 18 40 41 42 43 88 89 90 91
+tk_arreglo (294) 39 40 41
 tk_imprimir (295) 26
 tk_show (296) 23
-tk_if (297) 83 84
-tk_else (298) 85 86 87
+tk_if (297) 86 87
+tk_else (298) 88 89 90
 tk_para (299) 17 18
 tk_repetir (300) 13 14
 tk_public (301) 1
@@ -201,7 +206,7 @@ $accept (49)
 INICIO (50)
     en la izquierda: 1, en la derecha: 0
 LISTA_CUERPO (51)
-    en la izquierda: 2 3, en la derecha: 1 2 13 17 83 86
+    en la izquierda: 2 3, en la derecha: 1 2 13 17 86 89
 CUERPO (52)
     en la izquierda: 4 5 6 7 8 9 10, en la derecha: 2 3
 LISTA_REPETIR (53)
@@ -222,45 +227,49 @@ LISTA_IMPRIMIR (60)
     en la izquierda: 24 25, en la derecha: 6 24
 IMPRIMIR (61)
     en la izquierda: 26, en la derecha: 24 25
-LISTA_ASIGNACION (62)
-    en la izquierda: 27 28, en la derecha: 5 27
-ASIGNACION (63)
-    en la izquierda: 29, en la derecha: 19 27 28
-LISTA_VAR (64)
-    en la izquierda: 30 31, en la derecha: 29 30
-LISTA_DECLARACION (65)
-    en la izquierda: 32 33, en la derecha: 4 32
-DECLARACION (66)
-    en la izquierda: 34 35 36 37 38, en la derecha: 20 32 33
-ARRAY (67)
-    en la izquierda: 39 40, en la derecha: 37 39
-LISTA_FILA (68)
-    en la izquierda: 41 42, en la derecha: 38 39 40 41
-LISTA_DIMENSION (69)
-    en la izquierda: 43 44, en la derecha: 36 37 38 43 80
-TIPO_DATO (70)
-    en la izquierda: 45 46 47 48 49, en la derecha: 34 35 36 37 38
-LISTA_ID (71)
-    en la izquierda: 50 51, en la derecha: 34 35 36 37 38 50
-CONT_VALOR (72)
-    en la izquierda: 52, en la derecha: 13 14 17 18 23 26 30 31 34
-    41 42 83 84
-A (73)
-    en la izquierda: 53 54 55 56 57 58 59 60 61 62, en la derecha:
-    52 53 54 55 56 57 58 59 60 61
-OPERACION (74)
-    en la izquierda: 63, en la derecha: 17 18 43 44 62
-E (75)
-    en la izquierda: 64 65 66 67 68 69 70 71 72 73, en la derecha:
-    63 64 65 66 67 68 69 70 71 72
-VALOR (76)
-    en la izquierda: 74 75 76 77 78 79 80, en la derecha: 73
-LISTA_IF (77)
-    en la izquierda: 81 82, en la derecha: 8 81
-SI (78)
-    en la izquierda: 83 84, en la derecha: 81 82 85
-ELSE (79)
-    en la izquierda: 85 86 87 88, en la derecha: 83 84
+LISTA_VALORES (62)
+    en la izquierda: 27 28, en la derecha: 23 26 27
+VALORES (63)
+    en la izquierda: 29, en la derecha: 27 28
+LISTA_ASIGNACION (64)
+    en la izquierda: 30 31, en la derecha: 5 30
+ASIGNACION (65)
+    en la izquierda: 32, en la derecha: 19 30 31
+LISTA_VAR (66)
+    en la izquierda: 33 34, en la derecha: 32 33
+LISTA_DECLARACION (67)
+    en la izquierda: 35 36, en la derecha: 4 35
+DECLARACION (68)
+    en la izquierda: 37 38 39 40 41, en la derecha: 20 35 36
+ARRAY (69)
+    en la izquierda: 42 43, en la derecha: 40 42
+LISTA_FILA (70)
+    en la izquierda: 44 45, en la derecha: 41 42 43 44
+LISTA_DIMENSION (71)
+    en la izquierda: 46 47, en la derecha: 39 40 41 46 83
+TIPO_DATO (72)
+    en la izquierda: 48 49 50 51 52, en la derecha: 37 38 39 40 41
+LISTA_ID (73)
+    en la izquierda: 53 54, en la derecha: 37 38 39 40 41 53
+CONT_VALOR (74)
+    en la izquierda: 55, en la derecha: 13 14 17 18 23 33 34 37 44
+    45 86 87
+A (75)
+    en la izquierda: 56 57 58 59 60 61 62 63 64 65, en la derecha:
+    55 56 57 58 59 60 61 62 63 64
+OPERACION (76)
+    en la izquierda: 66, en la derecha: 17 18 46 47 65
+E (77)
+    en la izquierda: 67 68 69 70 71 72 73 74 75 76, en la derecha:
+    66 67 68 69 70 71 72 73 74 75
+VALOR (78)
+    en la izquierda: 77 78 79 80 81 82 83, en la derecha: 29 76
+LISTA_IF (79)
+    en la izquierda: 84 85, en la derecha: 8 84
+SI (80)
+    en la izquierda: 86 87, en la derecha: 84 85 88
+ELSE (81)
+    en la izquierda: 88 89 90 91, en la derecha: 86 87
 
 
 Estado 0
@@ -350,90 +359,90 @@ Estado 5
 
 Estado 6
 
-   47 TIPO_DATO: tk_int .
+   50 TIPO_DATO: tk_int .
 
-    $default  reduce usando la regla 47 (TIPO_DATO)
+    $default  reduce usando la regla 50 (TIPO_DATO)
 
 
 Estado 7
 
-   48 TIPO_DATO: tk_double .
+   51 TIPO_DATO: tk_double .
 
-    $default  reduce usando la regla 48 (TIPO_DATO)
+    $default  reduce usando la regla 51 (TIPO_DATO)
 
 
 Estado 8
 
-   46 TIPO_DATO: tk_bool .
-
-    $default  reduce usando la regla 46 (TIPO_DATO)
-
-
-Estado 9
-
-   49 TIPO_DATO: tk_char .
+   49 TIPO_DATO: tk_bool .
 
     $default  reduce usando la regla 49 (TIPO_DATO)
 
 
+Estado 9
+
+   52 TIPO_DATO: tk_char .
+
+    $default  reduce usando la regla 52 (TIPO_DATO)
+
+
 Estado 10
 
-   45 TIPO_DATO: tk_string .
+   48 TIPO_DATO: tk_string .
 
-    $default  reduce usando la regla 45 (TIPO_DATO)
+    $default  reduce usando la regla 48 (TIPO_DATO)
 
 
 Estado 11
 
-   74 VALOR: identificador .
-   80      | identificador . LISTA_DIMENSION
+   77 VALOR: identificador .
+   83      | identificador . LISTA_DIMENSION
 
     cori  desplazar e ir al estado 47
 
-    $default  reduce usando la regla 74 (VALOR)
+    $default  reduce usando la regla 77 (VALOR)
 
     LISTA_DIMENSION  ir al estado 48
 
 
 Estado 12
 
-   76 VALOR: entero .
-
-    $default  reduce usando la regla 76 (VALOR)
-
-
-Estado 13
-
-   77 VALOR: decimal .
-
-    $default  reduce usando la regla 77 (VALOR)
-
-
-Estado 14
-
-   79 VALOR: caracter .
+   79 VALOR: entero .
 
     $default  reduce usando la regla 79 (VALOR)
 
 
+Estado 13
+
+   80 VALOR: decimal .
+
+    $default  reduce usando la regla 80 (VALOR)
+
+
+Estado 14
+
+   82 VALOR: caracter .
+
+    $default  reduce usando la regla 82 (VALOR)
+
+
 Estado 15
 
-   78 VALOR: booleano .
+   81 VALOR: booleano .
 
-    $default  reduce usando la regla 78 (VALOR)
+    $default  reduce usando la regla 81 (VALOR)
 
 
 Estado 16
 
-   75 VALOR: cadena .
+   78 VALOR: cadena .
 
-    $default  reduce usando la regla 75 (VALOR)
+    $default  reduce usando la regla 78 (VALOR)
 
 
 Estado 17
 
-   61 A: pari . A pard
-   70 E: pari . E pard
+   64 A: pari . A pard
+   73 E: pari . E pard
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -452,7 +461,7 @@ Estado 17
 
 Estado 18
 
-   69 E: menos . E
+   72 E: menos . E
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -469,22 +478,22 @@ Estado 18
 
 Estado 19
 
-   26 IMPRIMIR: tk_imprimir . pari CONT_VALOR pard puntocoma
+   26 IMPRIMIR: tk_imprimir . pari LISTA_VALORES pard puntocoma
 
     pari  desplazar e ir al estado 53
 
 
 Estado 20
 
-   23 MOSTRAR: tk_show . pari CONT_VALOR coma CONT_VALOR pard puntocoma
+   23 MOSTRAR: tk_show . pari CONT_VALOR coma LISTA_VALORES pard puntocoma
 
     pari  desplazar e ir al estado 54
 
 
 Estado 21
 
-   83 SI: tk_if . pari CONT_VALOR pard llavei LISTA_CUERPO ELSE
-   84   | tk_if . pari CONT_VALOR pard llavei ELSE
+   86 SI: tk_if . pari CONT_VALOR pard llavei LISTA_CUERPO ELSE
+   87   | tk_if . pari CONT_VALOR pard llavei ELSE
 
     pari  desplazar e ir al estado 55
 
@@ -644,7 +653,7 @@ Estado 33
 Estado 34
 
     5 CUERPO: LISTA_ASIGNACION .
-   27 LISTA_ASIGNACION: LISTA_ASIGNACION . ASIGNACION
+   30 LISTA_ASIGNACION: LISTA_ASIGNACION . ASIGNACION
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -676,15 +685,15 @@ Estado 34
 
 Estado 35
 
-   28 LISTA_ASIGNACION: ASIGNACION .
+   31 LISTA_ASIGNACION: ASIGNACION .
 
-    $default  reduce usando la regla 28 (LISTA_ASIGNACION)
+    $default  reduce usando la regla 31 (LISTA_ASIGNACION)
 
 
 Estado 36
 
-   29 ASIGNACION: LISTA_VAR . puntocoma
-   30 LISTA_VAR: LISTA_VAR . tk_igual CONT_VALOR
+   32 ASIGNACION: LISTA_VAR . puntocoma
+   33 LISTA_VAR: LISTA_VAR . tk_igual CONT_VALOR
 
     tk_igual   desplazar e ir al estado 65
     puntocoma  desplazar e ir al estado 66
@@ -693,7 +702,7 @@ Estado 36
 Estado 37
 
     4 CUERPO: LISTA_DECLARACION .
-   32 LISTA_DECLARACION: LISTA_DECLARACION . DECLARACION
+   35 LISTA_DECLARACION: LISTA_DECLARACION . DECLARACION
 
     tk_int     desplazar e ir al estado 6
     tk_double  desplazar e ir al estado 7
@@ -714,18 +723,18 @@ Estado 37
 
 Estado 38
 
-   33 LISTA_DECLARACION: DECLARACION .
+   36 LISTA_DECLARACION: DECLARACION .
 
-    $default  reduce usando la regla 33 (LISTA_DECLARACION)
+    $default  reduce usando la regla 36 (LISTA_DECLARACION)
 
 
 Estado 39
 
-   34 DECLARACION: TIPO_DATO . LISTA_ID tk_igual CONT_VALOR puntocoma
-   35            | TIPO_DATO . LISTA_ID puntocoma
-   36            | TIPO_DATO . tk_arreglo LISTA_ID LISTA_DIMENSION puntocoma
-   37            | TIPO_DATO . tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
-   38            | TIPO_DATO . tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
+   37 DECLARACION: TIPO_DATO . LISTA_ID tk_igual CONT_VALOR puntocoma
+   38            | TIPO_DATO . LISTA_ID puntocoma
+   39            | TIPO_DATO . tk_arreglo LISTA_ID LISTA_DIMENSION puntocoma
+   40            | TIPO_DATO . tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
+   41            | TIPO_DATO . tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
 
     identificador  desplazar e ir al estado 68
     tk_arreglo     desplazar e ir al estado 69
@@ -735,22 +744,22 @@ Estado 39
 
 Estado 40
 
-   31 LISTA_VAR: CONT_VALOR .
+   34 LISTA_VAR: CONT_VALOR .
 
-    $default  reduce usando la regla 31 (LISTA_VAR)
+    $default  reduce usando la regla 34 (LISTA_VAR)
 
 
 Estado 41
 
-   52 CONT_VALOR: A .
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   55 CONT_VALOR: A .
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
 
     tk_menorque        desplazar e ir al estado 71
     tk_mayorque        desplazar e ir al estado 72
@@ -761,26 +770,26 @@ Estado 41
     tk_menorigual      desplazar e ir al estado 77
     tk_mayorigual      desplazar e ir al estado 78
 
-    $default  reduce usando la regla 52 (CONT_VALOR)
+    $default  reduce usando la regla 55 (CONT_VALOR)
 
 
 Estado 42
 
-   62 A: OPERACION .
+   65 A: OPERACION .
 
-    $default  reduce usando la regla 62 (A)
+    $default  reduce usando la regla 65 (A)
 
 
 Estado 43
 
-   63 OPERACION: E .
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   71  | E . aumento
-   72  | E . decremento
+   66 OPERACION: E .
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   74  | E . aumento
+   75  | E . decremento
 
     aumento     desplazar e ir al estado 79
     decremento  desplazar e ir al estado 80
@@ -790,20 +799,20 @@ Estado 43
     division    desplazar e ir al estado 84
     potencia    desplazar e ir al estado 85
 
-    $default  reduce usando la regla 63 (OPERACION)
+    $default  reduce usando la regla 66 (OPERACION)
 
 
 Estado 44
 
-   73 E: VALOR .
+   76 E: VALOR .
 
-    $default  reduce usando la regla 73 (E)
+    $default  reduce usando la regla 76 (E)
 
 
 Estado 45
 
     8 CUERPO: LISTA_IF .
-   81 LISTA_IF: LISTA_IF . SI
+   84 LISTA_IF: LISTA_IF . SI
 
     tk_if  desplazar e ir al estado 21
 
@@ -815,14 +824,14 @@ Estado 45
 
 Estado 46
 
-   82 LISTA_IF: SI .
+   85 LISTA_IF: SI .
 
-    $default  reduce usando la regla 82 (LISTA_IF)
+    $default  reduce usando la regla 85 (LISTA_IF)
 
 
 Estado 47
 
-   44 LISTA_DIMENSION: cori . OPERACION cord
+   47 LISTA_DIMENSION: cori . OPERACION cord
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -840,25 +849,25 @@ Estado 47
 
 Estado 48
 
-   43 LISTA_DIMENSION: LISTA_DIMENSION . cori OPERACION cord
-   80 VALOR: identificador LISTA_DIMENSION .
+   46 LISTA_DIMENSION: LISTA_DIMENSION . cori OPERACION cord
+   83 VALOR: identificador LISTA_DIMENSION .
 
     cori  desplazar e ir al estado 88
 
-    $default  reduce usando la regla 80 (VALOR)
+    $default  reduce usando la regla 83 (VALOR)
 
 
 Estado 49
 
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
-   61  | pari A . pard
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
+   64  | pari A . pard
 
     tk_menorque        desplazar e ir al estado 71
     tk_mayorque        desplazar e ir al estado 72
@@ -873,15 +882,15 @@ Estado 49
 
 Estado 50
 
-   63 OPERACION: E .
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   70  | pari E . pard
-   71  | E . aumento
-   72  | E . decremento
+   66 OPERACION: E .
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   73  | pari E . pard
+   74  | E . aumento
+   75  | E . decremento
 
     aumento     desplazar e ir al estado 79
     decremento  desplazar e ir al estado 80
@@ -892,13 +901,13 @@ Estado 50
     division    desplazar e ir al estado 84
     potencia    desplazar e ir al estado 85
 
-    pard      [reduce usando la regla 63 (OPERACION)]
-    $default  reduce usando la regla 63 (OPERACION)
+    pard      [reduce usando la regla 66 (OPERACION)]
+    $default  reduce usando la regla 66 (OPERACION)
 
 
 Estado 51
 
-   70 E: pari . E pard
+   73 E: pari . E pard
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -915,26 +924,26 @@ Estado 51
 
 Estado 52
 
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   69  | menos E .
-   71  | E . aumento
-   72  | E . decremento
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   72  | menos E .
+   74  | E . aumento
+   75  | E . decremento
 
     aumento     desplazar e ir al estado 79
     decremento  desplazar e ir al estado 80
 
-    aumento     [reduce usando la regla 69 (E)]
-    decremento  [reduce usando la regla 69 (E)]
-    $default    reduce usando la regla 69 (E)
+    aumento     [reduce usando la regla 72 (E)]
+    decremento  [reduce usando la regla 72 (E)]
+    $default    reduce usando la regla 72 (E)
 
 
 Estado 53
 
-   26 IMPRIMIR: tk_imprimir pari . CONT_VALOR pard puntocoma
+   26 IMPRIMIR: tk_imprimir pari . LISTA_VALORES pard puntocoma
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -942,19 +951,15 @@ Estado 53
     caracter       desplazar e ir al estado 14
     booleano       desplazar e ir al estado 15
     cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 17
-    menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 92
-    A           ir al estado 41
-    OPERACION   ir al estado 42
-    E           ir al estado 43
-    VALOR       ir al estado 44
+    LISTA_VALORES  ir al estado 92
+    VALORES        ir al estado 93
+    VALOR          ir al estado 94
 
 
 Estado 54
 
-   23 MOSTRAR: tk_show pari . CONT_VALOR coma CONT_VALOR pard puntocoma
+   23 MOSTRAR: tk_show pari . CONT_VALOR coma LISTA_VALORES pard puntocoma
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -965,7 +970,7 @@ Estado 54
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 93
+    CONT_VALOR  ir al estado 95
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
@@ -974,8 +979,8 @@ Estado 54
 
 Estado 55
 
-   83 SI: tk_if pari . CONT_VALOR pard llavei LISTA_CUERPO ELSE
-   84   | tk_if pari . CONT_VALOR pard llavei ELSE
+   86 SI: tk_if pari . CONT_VALOR pard llavei LISTA_CUERPO ELSE
+   87   | tk_if pari . CONT_VALOR pard llavei ELSE
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -986,7 +991,7 @@ Estado 55
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 94
+    CONT_VALOR  ir al estado 96
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
@@ -1012,10 +1017,10 @@ Estado 56
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    FOR_COND     ir al estado 95
-    ASIGNACION   ir al estado 96
+    FOR_COND     ir al estado 97
+    ASIGNACION   ir al estado 98
     LISTA_VAR    ir al estado 36
-    DECLARACION  ir al estado 97
+    DECLARACION  ir al estado 99
     TIPO_DATO    ir al estado 39
     CONT_VALOR   ir al estado 40
     A            ir al estado 41
@@ -1038,7 +1043,7 @@ Estado 57
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 98
+    CONT_VALOR  ir al estado 100
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
@@ -1089,14 +1094,14 @@ Estado 63
 
 Estado 64
 
-   27 LISTA_ASIGNACION: LISTA_ASIGNACION ASIGNACION .
+   30 LISTA_ASIGNACION: LISTA_ASIGNACION ASIGNACION .
 
-    $default  reduce usando la regla 27 (LISTA_ASIGNACION)
+    $default  reduce usando la regla 30 (LISTA_ASIGNACION)
 
 
 Estado 65
 
-   30 LISTA_VAR: LISTA_VAR tk_igual . CONT_VALOR
+   33 LISTA_VAR: LISTA_VAR tk_igual . CONT_VALOR
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1107,7 +1112,7 @@ Estado 65
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 99
+    CONT_VALOR  ir al estado 101
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
@@ -1116,88 +1121,50 @@ Estado 65
 
 Estado 66
 
-   29 ASIGNACION: LISTA_VAR puntocoma .
+   32 ASIGNACION: LISTA_VAR puntocoma .
 
-    $default  reduce usando la regla 29 (ASIGNACION)
+    $default  reduce usando la regla 32 (ASIGNACION)
 
 
 Estado 67
 
-   32 LISTA_DECLARACION: LISTA_DECLARACION DECLARACION .
+   35 LISTA_DECLARACION: LISTA_DECLARACION DECLARACION .
 
-    $default  reduce usando la regla 32 (LISTA_DECLARACION)
+    $default  reduce usando la regla 35 (LISTA_DECLARACION)
 
 
 Estado 68
 
-   51 LISTA_ID: identificador .
+   54 LISTA_ID: identificador .
 
-    $default  reduce usando la regla 51 (LISTA_ID)
+    $default  reduce usando la regla 54 (LISTA_ID)
 
 
 Estado 69
 
-   36 DECLARACION: TIPO_DATO tk_arreglo . LISTA_ID LISTA_DIMENSION puntocoma
-   37            | TIPO_DATO tk_arreglo . LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
-   38            | TIPO_DATO tk_arreglo . LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
+   39 DECLARACION: TIPO_DATO tk_arreglo . LISTA_ID LISTA_DIMENSION puntocoma
+   40            | TIPO_DATO tk_arreglo . LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
+   41            | TIPO_DATO tk_arreglo . LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
 
     identificador  desplazar e ir al estado 68
 
-    LISTA_ID  ir al estado 100
+    LISTA_ID  ir al estado 102
 
 
 Estado 70
 
-   34 DECLARACION: TIPO_DATO LISTA_ID . tk_igual CONT_VALOR puntocoma
-   35            | TIPO_DATO LISTA_ID . puntocoma
-   50 LISTA_ID: LISTA_ID . coma identificador
+   37 DECLARACION: TIPO_DATO LISTA_ID . tk_igual CONT_VALOR puntocoma
+   38            | TIPO_DATO LISTA_ID . puntocoma
+   53 LISTA_ID: LISTA_ID . coma identificador
 
-    tk_igual   desplazar e ir al estado 101
-    coma       desplazar e ir al estado 102
-    puntocoma  desplazar e ir al estado 103
+    tk_igual   desplazar e ir al estado 103
+    coma       desplazar e ir al estado 104
+    puntocoma  desplazar e ir al estado 105
 
 
 Estado 71
 
-   56 A: A tk_menorque . A
-
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 17
-    menos          desplazar e ir al estado 18
-
-    A          ir al estado 104
-    OPERACION  ir al estado 42
-    E          ir al estado 43
-    VALOR      ir al estado 44
-
-
-Estado 72
-
-   55 A: A tk_mayorque . A
-
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 17
-    menos          desplazar e ir al estado 18
-
-    A          ir al estado 105
-    OPERACION  ir al estado 42
-    E          ir al estado 43
-    VALOR      ir al estado 44
-
-
-Estado 73
-
-   54 A: A tk_or . A
+   59 A: A tk_menorque . A
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1214,9 +1181,9 @@ Estado 73
     VALOR      ir al estado 44
 
 
-Estado 74
+Estado 72
 
-   53 A: A tk_and . A
+   58 A: A tk_mayorque . A
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1233,9 +1200,9 @@ Estado 74
     VALOR      ir al estado 44
 
 
-Estado 75
+Estado 73
 
-   59 A: A tk_igualacion . A
+   57 A: A tk_or . A
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1252,9 +1219,9 @@ Estado 75
     VALOR      ir al estado 44
 
 
-Estado 76
+Estado 74
 
-   60 A: A tk_diferenciacion . A
+   56 A: A tk_and . A
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1271,9 +1238,9 @@ Estado 76
     VALOR      ir al estado 44
 
 
-Estado 77
+Estado 75
 
-   58 A: A tk_menorigual . A
+   62 A: A tk_igualacion . A
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1290,9 +1257,9 @@ Estado 77
     VALOR      ir al estado 44
 
 
-Estado 78
+Estado 76
 
-   57 A: A tk_mayorigual . A
+   63 A: A tk_diferenciacion . A
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1309,57 +1276,61 @@ Estado 78
     VALOR      ir al estado 44
 
 
+Estado 77
+
+   61 A: A tk_menorigual . A
+
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 17
+    menos          desplazar e ir al estado 18
+
+    A          ir al estado 112
+    OPERACION  ir al estado 42
+    E          ir al estado 43
+    VALOR      ir al estado 44
+
+
+Estado 78
+
+   60 A: A tk_mayorigual . A
+
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 17
+    menos          desplazar e ir al estado 18
+
+    A          ir al estado 113
+    OPERACION  ir al estado 42
+    E          ir al estado 43
+    VALOR      ir al estado 44
+
+
 Estado 79
 
-   71 E: E aumento .
+   74 E: E aumento .
 
-    $default  reduce usando la regla 71 (E)
+    $default  reduce usando la regla 74 (E)
 
 
 Estado 80
 
-   72 E: E decremento .
+   75 E: E decremento .
 
-    $default  reduce usando la regla 72 (E)
+    $default  reduce usando la regla 75 (E)
 
 
 Estado 81
 
-   64 E: E suma . E
-
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 51
-    menos          desplazar e ir al estado 18
-
-    E      ir al estado 112
-    VALOR  ir al estado 44
-
-
-Estado 82
-
-   65 E: E menos . E
-
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 51
-    menos          desplazar e ir al estado 18
-
-    E      ir al estado 113
-    VALOR  ir al estado 44
-
-
-Estado 83
-
-   66 E: E multi . E
+   67 E: E suma . E
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1374,9 +1345,9 @@ Estado 83
     VALOR  ir al estado 44
 
 
-Estado 84
+Estado 82
 
-   67 E: E division . E
+   68 E: E menos . E
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1391,9 +1362,9 @@ Estado 84
     VALOR  ir al estado 44
 
 
-Estado 85
+Estado 83
 
-   68 E: E potencia . E
+   69 E: E multi . E
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1408,23 +1379,9 @@ Estado 85
     VALOR  ir al estado 44
 
 
-Estado 86
+Estado 84
 
-   81 LISTA_IF: LISTA_IF SI .
-
-    $default  reduce usando la regla 81 (LISTA_IF)
-
-
-Estado 87
-
-   44 LISTA_DIMENSION: cori OPERACION . cord
-
-    cord  desplazar e ir al estado 117
-
-
-Estado 88
-
-   43 LISTA_DIMENSION: LISTA_DIMENSION cori . OPERACION cord
+   70 E: E division . E
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1435,35 +1392,83 @@ Estado 88
     pari           desplazar e ir al estado 51
     menos          desplazar e ir al estado 18
 
-    OPERACION  ir al estado 118
+    E      ir al estado 117
+    VALOR  ir al estado 44
+
+
+Estado 85
+
+   71 E: E potencia . E
+
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 51
+    menos          desplazar e ir al estado 18
+
+    E      ir al estado 118
+    VALOR  ir al estado 44
+
+
+Estado 86
+
+   84 LISTA_IF: LISTA_IF SI .
+
+    $default  reduce usando la regla 84 (LISTA_IF)
+
+
+Estado 87
+
+   47 LISTA_DIMENSION: cori OPERACION . cord
+
+    cord  desplazar e ir al estado 119
+
+
+Estado 88
+
+   46 LISTA_DIMENSION: LISTA_DIMENSION cori . OPERACION cord
+
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 51
+    menos          desplazar e ir al estado 18
+
+    OPERACION  ir al estado 120
     E          ir al estado 43
     VALOR      ir al estado 44
 
 
 Estado 89
 
-   61 A: pari A pard .
+   64 A: pari A pard .
 
-    $default  reduce usando la regla 61 (A)
+    $default  reduce usando la regla 64 (A)
 
 
 Estado 90
 
-   70 E: pari E pard .
+   73 E: pari E pard .
 
-    $default  reduce usando la regla 70 (E)
+    $default  reduce usando la regla 73 (E)
 
 
 Estado 91
 
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   70  | pari E . pard
-   71  | E . aumento
-   72  | E . decremento
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   73  | pari E . pard
+   74  | E . aumento
+   75  | E . decremento
 
     aumento     desplazar e ir al estado 79
     decremento  desplazar e ir al estado 80
@@ -1477,92 +1482,46 @@ Estado 91
 
 Estado 92
 
-   26 IMPRIMIR: tk_imprimir pari CONT_VALOR . pard puntocoma
+   26 IMPRIMIR: tk_imprimir pari LISTA_VALORES . pard puntocoma
+   27 LISTA_VALORES: LISTA_VALORES . suma VALORES
 
-    pard  desplazar e ir al estado 119
+    pard  desplazar e ir al estado 121
+    suma  desplazar e ir al estado 122
 
 
 Estado 93
 
-   23 MOSTRAR: tk_show pari CONT_VALOR . coma CONT_VALOR pard puntocoma
+   28 LISTA_VALORES: VALORES .
 
-    coma  desplazar e ir al estado 120
+    $default  reduce usando la regla 28 (LISTA_VALORES)
 
 
 Estado 94
 
-   83 SI: tk_if pari CONT_VALOR . pard llavei LISTA_CUERPO ELSE
-   84   | tk_if pari CONT_VALOR . pard llavei ELSE
+   29 VALORES: VALOR .
 
-    pard  desplazar e ir al estado 121
+    $default  reduce usando la regla 29 (VALORES)
 
 
 Estado 95
 
-   17 FOR: tk_para pari FOR_COND . CONT_VALOR puntocoma OPERACION pard llavei LISTA_CUERPO llaved
-   18    | tk_para pari FOR_COND . CONT_VALOR puntocoma OPERACION pard llavei llaved
+   23 MOSTRAR: tk_show pari CONT_VALOR . coma LISTA_VALORES pard puntocoma
 
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 17
-    menos          desplazar e ir al estado 18
-
-    CONT_VALOR  ir al estado 122
-    A           ir al estado 41
-    OPERACION   ir al estado 42
-    E           ir al estado 43
-    VALOR       ir al estado 44
+    coma  desplazar e ir al estado 123
 
 
 Estado 96
 
-   19 FOR_COND: ASIGNACION .
+   86 SI: tk_if pari CONT_VALOR . pard llavei LISTA_CUERPO ELSE
+   87   | tk_if pari CONT_VALOR . pard llavei ELSE
 
-    $default  reduce usando la regla 19 (FOR_COND)
+    pard  desplazar e ir al estado 124
 
 
 Estado 97
 
-   20 FOR_COND: DECLARACION .
-
-    $default  reduce usando la regla 20 (FOR_COND)
-
-
-Estado 98
-
-   13 REPETIR: tk_repetir pari CONT_VALOR . pard llavei LISTA_CUERPO llaved
-   14        | tk_repetir pari CONT_VALOR . pard llavei llaved
-
-    pard  desplazar e ir al estado 123
-
-
-Estado 99
-
-   30 LISTA_VAR: LISTA_VAR tk_igual CONT_VALOR .
-
-    $default  reduce usando la regla 30 (LISTA_VAR)
-
-
-Estado 100
-
-   36 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID . LISTA_DIMENSION puntocoma
-   37            | TIPO_DATO tk_arreglo LISTA_ID . LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
-   38            | TIPO_DATO tk_arreglo LISTA_ID . LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
-   50 LISTA_ID: LISTA_ID . coma identificador
-
-    cori  desplazar e ir al estado 47
-    coma  desplazar e ir al estado 102
-
-    LISTA_DIMENSION  ir al estado 124
-
-
-Estado 101
-
-   34 DECLARACION: TIPO_DATO LISTA_ID tk_igual . CONT_VALOR puntocoma
+   17 FOR: tk_para pari FOR_COND . CONT_VALOR puntocoma OPERACION pard llavei LISTA_CUERPO llaved
+   18    | tk_para pari FOR_COND . CONT_VALOR puntocoma OPERACION pard llavei llaved
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1580,61 +1539,123 @@ Estado 101
     VALOR       ir al estado 44
 
 
+Estado 98
+
+   19 FOR_COND: ASIGNACION .
+
+    $default  reduce usando la regla 19 (FOR_COND)
+
+
+Estado 99
+
+   20 FOR_COND: DECLARACION .
+
+    $default  reduce usando la regla 20 (FOR_COND)
+
+
+Estado 100
+
+   13 REPETIR: tk_repetir pari CONT_VALOR . pard llavei LISTA_CUERPO llaved
+   14        | tk_repetir pari CONT_VALOR . pard llavei llaved
+
+    pard  desplazar e ir al estado 126
+
+
+Estado 101
+
+   33 LISTA_VAR: LISTA_VAR tk_igual CONT_VALOR .
+
+    $default  reduce usando la regla 33 (LISTA_VAR)
+
+
 Estado 102
 
-   50 LISTA_ID: LISTA_ID coma . identificador
+   39 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID . LISTA_DIMENSION puntocoma
+   40            | TIPO_DATO tk_arreglo LISTA_ID . LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma
+   41            | TIPO_DATO tk_arreglo LISTA_ID . LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma
+   53 LISTA_ID: LISTA_ID . coma identificador
 
-    identificador  desplazar e ir al estado 126
+    cori  desplazar e ir al estado 47
+    coma  desplazar e ir al estado 104
+
+    LISTA_DIMENSION  ir al estado 127
 
 
 Estado 103
 
-   35 DECLARACION: TIPO_DATO LISTA_ID puntocoma .
+   37 DECLARACION: TIPO_DATO LISTA_ID tk_igual . CONT_VALOR puntocoma
 
-    $default  reduce usando la regla 35 (DECLARACION)
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 17
+    menos          desplazar e ir al estado 18
+
+    CONT_VALOR  ir al estado 128
+    A           ir al estado 41
+    OPERACION   ir al estado 42
+    E           ir al estado 43
+    VALOR       ir al estado 44
 
 
 Estado 104
 
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   56  | A tk_menorque A .
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   53 LISTA_ID: LISTA_ID coma . identificador
 
-    $default  reduce usando la regla 56 (A)
+    identificador  desplazar e ir al estado 129
 
 
 Estado 105
 
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   55  | A tk_mayorque A .
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   38 DECLARACION: TIPO_DATO LISTA_ID puntocoma .
 
-    $default  reduce usando la regla 55 (A)
+    $default  reduce usando la regla 38 (DECLARACION)
 
 
 Estado 106
 
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   54  | A tk_or A .
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   59  | A tk_menorque A .
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
+
+    $default  reduce usando la regla 59 (A)
+
+
+Estado 107
+
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   58  | A tk_mayorque A .
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
+
+    $default  reduce usando la regla 58 (A)
+
+
+Estado 108
+
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   57  | A tk_or A .
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
 
     tk_menorque        desplazar e ir al estado 71
     tk_mayorque        desplazar e ir al estado 72
@@ -1644,20 +1665,20 @@ Estado 106
     tk_menorigual      desplazar e ir al estado 77
     tk_mayorigual      desplazar e ir al estado 78
 
-    $default  reduce usando la regla 54 (A)
+    $default  reduce usando la regla 57 (A)
 
 
-Estado 107
+Estado 109
 
-   53 A: A . tk_and A
-   53  | A tk_and A .
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   56 A: A . tk_and A
+   56  | A tk_and A .
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
 
     tk_menorque        desplazar e ir al estado 71
     tk_mayorque        desplazar e ir al estado 72
@@ -1666,146 +1687,84 @@ Estado 107
     tk_menorigual      desplazar e ir al estado 77
     tk_mayorigual      desplazar e ir al estado 78
 
-    $default  reduce usando la regla 53 (A)
-
-
-Estado 108
-
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   59  | A tk_igualacion A .
-   60  | A . tk_diferenciacion A
-
-    $default  reduce usando la regla 59 (A)
-
-
-Estado 109
-
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
-   60  | A tk_diferenciacion A .
-
-    $default  reduce usando la regla 60 (A)
+    $default  reduce usando la regla 56 (A)
 
 
 Estado 110
 
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   58  | A . tk_menorigual A
-   58  | A tk_menorigual A .
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   62  | A tk_igualacion A .
+   63  | A . tk_diferenciacion A
 
-    $default  reduce usando la regla 58 (A)
+    $default  reduce usando la regla 62 (A)
 
 
 Estado 111
 
-   53 A: A . tk_and A
-   54  | A . tk_or A
-   55  | A . tk_mayorque A
-   56  | A . tk_menorque A
-   57  | A . tk_mayorigual A
-   57  | A tk_mayorigual A .
-   58  | A . tk_menorigual A
-   59  | A . tk_igualacion A
-   60  | A . tk_diferenciacion A
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
+   63  | A tk_diferenciacion A .
 
-    $default  reduce usando la regla 57 (A)
+    $default  reduce usando la regla 63 (A)
 
 
 Estado 112
 
-   64 E: E . suma E
-   64  | E suma E .
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   71  | E . aumento
-   72  | E . decremento
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   61  | A . tk_menorigual A
+   61  | A tk_menorigual A .
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
 
-    aumento     desplazar e ir al estado 79
-    decremento  desplazar e ir al estado 80
-    multi       desplazar e ir al estado 83
-    division    desplazar e ir al estado 84
-    potencia    desplazar e ir al estado 85
-
-    aumento     [reduce usando la regla 64 (E)]
-    decremento  [reduce usando la regla 64 (E)]
-    $default    reduce usando la regla 64 (E)
+    $default  reduce usando la regla 61 (A)
 
 
 Estado 113
 
-   64 E: E . suma E
-   65  | E . menos E
-   65  | E menos E .
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   71  | E . aumento
-   72  | E . decremento
+   56 A: A . tk_and A
+   57  | A . tk_or A
+   58  | A . tk_mayorque A
+   59  | A . tk_menorque A
+   60  | A . tk_mayorigual A
+   60  | A tk_mayorigual A .
+   61  | A . tk_menorigual A
+   62  | A . tk_igualacion A
+   63  | A . tk_diferenciacion A
+
+    $default  reduce usando la regla 60 (A)
+
+
+Estado 114
+
+   67 E: E . suma E
+   67  | E suma E .
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   74  | E . aumento
+   75  | E . decremento
 
     aumento     desplazar e ir al estado 79
     decremento  desplazar e ir al estado 80
     multi       desplazar e ir al estado 83
     division    desplazar e ir al estado 84
-    potencia    desplazar e ir al estado 85
-
-    aumento     [reduce usando la regla 65 (E)]
-    decremento  [reduce usando la regla 65 (E)]
-    $default    reduce usando la regla 65 (E)
-
-
-Estado 114
-
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   66  | E multi E .
-   67  | E . division E
-   68  | E . potencia E
-   71  | E . aumento
-   72  | E . decremento
-
-    aumento     desplazar e ir al estado 79
-    decremento  desplazar e ir al estado 80
-    potencia    desplazar e ir al estado 85
-
-    aumento     [reduce usando la regla 66 (E)]
-    decremento  [reduce usando la regla 66 (E)]
-    $default    reduce usando la regla 66 (E)
-
-
-Estado 115
-
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   67  | E division E .
-   68  | E . potencia E
-   71  | E . aumento
-   72  | E . decremento
-
-    aumento     desplazar e ir al estado 79
-    decremento  desplazar e ir al estado 80
     potencia    desplazar e ir al estado 85
 
     aumento     [reduce usando la regla 67 (E)]
@@ -1813,49 +1772,111 @@ Estado 115
     $default    reduce usando la regla 67 (E)
 
 
-Estado 116
+Estado 115
 
-   64 E: E . suma E
-   65  | E . menos E
-   66  | E . multi E
-   67  | E . division E
-   68  | E . potencia E
-   68  | E potencia E .
-   71  | E . aumento
-   72  | E . decremento
+   67 E: E . suma E
+   68  | E . menos E
+   68  | E menos E .
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   74  | E . aumento
+   75  | E . decremento
 
     aumento     desplazar e ir al estado 79
     decremento  desplazar e ir al estado 80
+    multi       desplazar e ir al estado 83
+    division    desplazar e ir al estado 84
+    potencia    desplazar e ir al estado 85
 
     aumento     [reduce usando la regla 68 (E)]
     decremento  [reduce usando la regla 68 (E)]
     $default    reduce usando la regla 68 (E)
 
 
+Estado 116
+
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   69  | E multi E .
+   70  | E . division E
+   71  | E . potencia E
+   74  | E . aumento
+   75  | E . decremento
+
+    aumento     desplazar e ir al estado 79
+    decremento  desplazar e ir al estado 80
+    potencia    desplazar e ir al estado 85
+
+    aumento     [reduce usando la regla 69 (E)]
+    decremento  [reduce usando la regla 69 (E)]
+    $default    reduce usando la regla 69 (E)
+
+
 Estado 117
 
-   44 LISTA_DIMENSION: cori OPERACION cord .
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   70  | E division E .
+   71  | E . potencia E
+   74  | E . aumento
+   75  | E . decremento
 
-    $default  reduce usando la regla 44 (LISTA_DIMENSION)
+    aumento     desplazar e ir al estado 79
+    decremento  desplazar e ir al estado 80
+    potencia    desplazar e ir al estado 85
+
+    aumento     [reduce usando la regla 70 (E)]
+    decremento  [reduce usando la regla 70 (E)]
+    $default    reduce usando la regla 70 (E)
 
 
 Estado 118
 
-   43 LISTA_DIMENSION: LISTA_DIMENSION cori OPERACION . cord
+   67 E: E . suma E
+   68  | E . menos E
+   69  | E . multi E
+   70  | E . division E
+   71  | E . potencia E
+   71  | E potencia E .
+   74  | E . aumento
+   75  | E . decremento
 
-    cord  desplazar e ir al estado 127
+    aumento     desplazar e ir al estado 79
+    decremento  desplazar e ir al estado 80
+
+    aumento     [reduce usando la regla 71 (E)]
+    decremento  [reduce usando la regla 71 (E)]
+    $default    reduce usando la regla 71 (E)
 
 
 Estado 119
 
-   26 IMPRIMIR: tk_imprimir pari CONT_VALOR pard . puntocoma
+   47 LISTA_DIMENSION: cori OPERACION cord .
 
-    puntocoma  desplazar e ir al estado 128
+    $default  reduce usando la regla 47 (LISTA_DIMENSION)
 
 
 Estado 120
 
-   23 MOSTRAR: tk_show pari CONT_VALOR coma . CONT_VALOR pard puntocoma
+   46 LISTA_DIMENSION: LISTA_DIMENSION cori OPERACION . cord
+
+    cord  desplazar e ir al estado 130
+
+
+Estado 121
+
+   26 IMPRIMIR: tk_imprimir pari LISTA_VALORES pard . puntocoma
+
+    puntocoma  desplazar e ir al estado 131
+
+
+Estado 122
+
+   27 LISTA_VALORES: LISTA_VALORES suma . VALORES
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -1863,161 +1884,111 @@ Estado 120
     caracter       desplazar e ir al estado 14
     booleano       desplazar e ir al estado 15
     cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 17
-    menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 129
-    A           ir al estado 41
-    OPERACION   ir al estado 42
-    E           ir al estado 43
-    VALOR       ir al estado 44
-
-
-Estado 121
-
-   83 SI: tk_if pari CONT_VALOR pard . llavei LISTA_CUERPO ELSE
-   84   | tk_if pari CONT_VALOR pard . llavei ELSE
-
-    llavei  desplazar e ir al estado 130
-
-
-Estado 122
-
-   17 FOR: tk_para pari FOR_COND CONT_VALOR . puntocoma OPERACION pard llavei LISTA_CUERPO llaved
-   18    | tk_para pari FOR_COND CONT_VALOR . puntocoma OPERACION pard llavei llaved
-
-    puntocoma  desplazar e ir al estado 131
+    VALORES  ir al estado 132
+    VALOR    ir al estado 94
 
 
 Estado 123
 
-   13 REPETIR: tk_repetir pari CONT_VALOR pard . llavei LISTA_CUERPO llaved
-   14        | tk_repetir pari CONT_VALOR pard . llavei llaved
+   23 MOSTRAR: tk_show pari CONT_VALOR coma . LISTA_VALORES pard puntocoma
 
-    llavei  desplazar e ir al estado 132
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+
+    LISTA_VALORES  ir al estado 133
+    VALORES        ir al estado 93
+    VALOR          ir al estado 94
 
 
 Estado 124
 
-   36 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION . puntocoma
-   37            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION . tk_igual llavei ARRAY llaved puntocoma
-   38            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION . tk_igual llavei LISTA_FILA llaved puntocoma
-   43 LISTA_DIMENSION: LISTA_DIMENSION . cori OPERACION cord
+   86 SI: tk_if pari CONT_VALOR pard . llavei LISTA_CUERPO ELSE
+   87   | tk_if pari CONT_VALOR pard . llavei ELSE
 
-    tk_igual   desplazar e ir al estado 133
-    cori       desplazar e ir al estado 88
-    puntocoma  desplazar e ir al estado 134
+    llavei  desplazar e ir al estado 134
 
 
 Estado 125
 
-   34 DECLARACION: TIPO_DATO LISTA_ID tk_igual CONT_VALOR . puntocoma
+   17 FOR: tk_para pari FOR_COND CONT_VALOR . puntocoma OPERACION pard llavei LISTA_CUERPO llaved
+   18    | tk_para pari FOR_COND CONT_VALOR . puntocoma OPERACION pard llavei llaved
 
     puntocoma  desplazar e ir al estado 135
 
 
 Estado 126
 
-   50 LISTA_ID: LISTA_ID coma identificador .
+   13 REPETIR: tk_repetir pari CONT_VALOR pard . llavei LISTA_CUERPO llaved
+   14        | tk_repetir pari CONT_VALOR pard . llavei llaved
 
-    $default  reduce usando la regla 50 (LISTA_ID)
+    llavei  desplazar e ir al estado 136
 
 
 Estado 127
 
-   43 LISTA_DIMENSION: LISTA_DIMENSION cori OPERACION cord .
+   39 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION . puntocoma
+   40            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION . tk_igual llavei ARRAY llaved puntocoma
+   41            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION . tk_igual llavei LISTA_FILA llaved puntocoma
+   46 LISTA_DIMENSION: LISTA_DIMENSION . cori OPERACION cord
 
-    $default  reduce usando la regla 43 (LISTA_DIMENSION)
+    tk_igual   desplazar e ir al estado 137
+    cori       desplazar e ir al estado 88
+    puntocoma  desplazar e ir al estado 138
 
 
 Estado 128
 
-   26 IMPRIMIR: tk_imprimir pari CONT_VALOR pard puntocoma .
+   37 DECLARACION: TIPO_DATO LISTA_ID tk_igual CONT_VALOR . puntocoma
 
-    $default  reduce usando la regla 26 (IMPRIMIR)
+    puntocoma  desplazar e ir al estado 139
 
 
 Estado 129
 
-   23 MOSTRAR: tk_show pari CONT_VALOR coma CONT_VALOR . pard puntocoma
+   53 LISTA_ID: LISTA_ID coma identificador .
 
-    pard  desplazar e ir al estado 136
+    $default  reduce usando la regla 53 (LISTA_ID)
 
 
 Estado 130
 
-   83 SI: tk_if pari CONT_VALOR pard llavei . LISTA_CUERPO ELSE
-   84   | tk_if pari CONT_VALOR pard llavei . ELSE
+   46 LISTA_DIMENSION: LISTA_DIMENSION cori OPERACION cord .
 
-    tk_int         desplazar e ir al estado 6
-    tk_double      desplazar e ir al estado 7
-    tk_bool        desplazar e ir al estado 8
-    tk_char        desplazar e ir al estado 9
-    tk_string      desplazar e ir al estado 10
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 17
-    menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 137
-    tk_imprimir    desplazar e ir al estado 19
-    tk_show        desplazar e ir al estado 20
-    tk_if          desplazar e ir al estado 21
-    tk_para        desplazar e ir al estado 22
-    tk_repetir     desplazar e ir al estado 23
-
-    LISTA_CUERPO       ir al estado 138
-    CUERPO             ir al estado 25
-    LISTA_REPETIR      ir al estado 26
-    REPETIR            ir al estado 27
-    LISTA_FOR          ir al estado 28
-    FOR                ir al estado 29
-    LISTA_MOSTRAR      ir al estado 30
-    MOSTRAR            ir al estado 31
-    LISTA_IMPRIMIR     ir al estado 32
-    IMPRIMIR           ir al estado 33
-    LISTA_ASIGNACION   ir al estado 34
-    ASIGNACION         ir al estado 35
-    LISTA_VAR          ir al estado 36
-    LISTA_DECLARACION  ir al estado 37
-    DECLARACION        ir al estado 38
-    TIPO_DATO          ir al estado 39
-    CONT_VALOR         ir al estado 40
-    A                  ir al estado 41
-    OPERACION          ir al estado 42
-    E                  ir al estado 43
-    VALOR              ir al estado 44
-    LISTA_IF           ir al estado 45
-    SI                 ir al estado 46
-    ELSE               ir al estado 139
+    $default  reduce usando la regla 46 (LISTA_DIMENSION)
 
 
 Estado 131
 
-   17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma . OPERACION pard llavei LISTA_CUERPO llaved
-   18    | tk_para pari FOR_COND CONT_VALOR puntocoma . OPERACION pard llavei llaved
+   26 IMPRIMIR: tk_imprimir pari LISTA_VALORES pard puntocoma .
 
-    identificador  desplazar e ir al estado 11
-    entero         desplazar e ir al estado 12
-    decimal        desplazar e ir al estado 13
-    caracter       desplazar e ir al estado 14
-    booleano       desplazar e ir al estado 15
-    cadena         desplazar e ir al estado 16
-    pari           desplazar e ir al estado 51
-    menos          desplazar e ir al estado 18
-
-    OPERACION  ir al estado 140
-    E          ir al estado 43
-    VALOR      ir al estado 44
+    $default  reduce usando la regla 26 (IMPRIMIR)
 
 
 Estado 132
 
-   13 REPETIR: tk_repetir pari CONT_VALOR pard llavei . LISTA_CUERPO llaved
-   14        | tk_repetir pari CONT_VALOR pard llavei . llaved
+   27 LISTA_VALORES: LISTA_VALORES suma VALORES .
+
+    $default  reduce usando la regla 27 (LISTA_VALORES)
+
+
+Estado 133
+
+   23 MOSTRAR: tk_show pari CONT_VALOR coma LISTA_VALORES . pard puntocoma
+   27 LISTA_VALORES: LISTA_VALORES . suma VALORES
+
+    pard  desplazar e ir al estado 140
+    suma  desplazar e ir al estado 122
+
+
+Estado 134
+
+   86 SI: tk_if pari CONT_VALOR pard llavei . LISTA_CUERPO ELSE
+   87   | tk_if pari CONT_VALOR pard llavei . ELSE
 
     tk_int         desplazar e ir al estado 6
     tk_double      desplazar e ir al estado 7
@@ -2062,53 +2033,32 @@ Estado 132
     VALOR              ir al estado 44
     LISTA_IF           ir al estado 45
     SI                 ir al estado 46
-
-
-Estado 133
-
-   37 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual . llavei ARRAY llaved puntocoma
-   38            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual . llavei LISTA_FILA llaved puntocoma
-
-    llavei  desplazar e ir al estado 143
-
-
-Estado 134
-
-   36 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION puntocoma .
-
-    $default  reduce usando la regla 36 (DECLARACION)
+    ELSE               ir al estado 143
 
 
 Estado 135
 
-   34 DECLARACION: TIPO_DATO LISTA_ID tk_igual CONT_VALOR puntocoma .
+   17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma . OPERACION pard llavei LISTA_CUERPO llaved
+   18    | tk_para pari FOR_COND CONT_VALOR puntocoma . OPERACION pard llavei llaved
 
-    $default  reduce usando la regla 34 (DECLARACION)
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 51
+    menos          desplazar e ir al estado 18
+
+    OPERACION  ir al estado 144
+    E          ir al estado 43
+    VALOR      ir al estado 44
 
 
 Estado 136
 
-   23 MOSTRAR: tk_show pari CONT_VALOR coma CONT_VALOR pard . puntocoma
-
-    puntocoma  desplazar e ir al estado 144
-
-
-Estado 137
-
-   85 ELSE: llaved . tk_else SI
-   86     | llaved . tk_else llavei LISTA_CUERPO llaved
-   87     | llaved . tk_else llavei llaved
-   88     | llaved .
-
-    tk_else  desplazar e ir al estado 145
-
-    $default  reduce usando la regla 88 (ELSE)
-
-
-Estado 138
-
-    2 LISTA_CUERPO: LISTA_CUERPO . CUERPO
-   83 SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO . ELSE
+   13 REPETIR: tk_repetir pari CONT_VALOR pard llavei . LISTA_CUERPO llaved
+   14        | tk_repetir pari CONT_VALOR pard llavei . llaved
 
     tk_int         desplazar e ir al estado 6
     tk_double      desplazar e ir al estado 7
@@ -2123,7 +2073,98 @@ Estado 138
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 137
+    llaved         desplazar e ir al estado 145
+    tk_imprimir    desplazar e ir al estado 19
+    tk_show        desplazar e ir al estado 20
+    tk_if          desplazar e ir al estado 21
+    tk_para        desplazar e ir al estado 22
+    tk_repetir     desplazar e ir al estado 23
+
+    LISTA_CUERPO       ir al estado 146
+    CUERPO             ir al estado 25
+    LISTA_REPETIR      ir al estado 26
+    REPETIR            ir al estado 27
+    LISTA_FOR          ir al estado 28
+    FOR                ir al estado 29
+    LISTA_MOSTRAR      ir al estado 30
+    MOSTRAR            ir al estado 31
+    LISTA_IMPRIMIR     ir al estado 32
+    IMPRIMIR           ir al estado 33
+    LISTA_ASIGNACION   ir al estado 34
+    ASIGNACION         ir al estado 35
+    LISTA_VAR          ir al estado 36
+    LISTA_DECLARACION  ir al estado 37
+    DECLARACION        ir al estado 38
+    TIPO_DATO          ir al estado 39
+    CONT_VALOR         ir al estado 40
+    A                  ir al estado 41
+    OPERACION          ir al estado 42
+    E                  ir al estado 43
+    VALOR              ir al estado 44
+    LISTA_IF           ir al estado 45
+    SI                 ir al estado 46
+
+
+Estado 137
+
+   40 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual . llavei ARRAY llaved puntocoma
+   41            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual . llavei LISTA_FILA llaved puntocoma
+
+    llavei  desplazar e ir al estado 147
+
+
+Estado 138
+
+   39 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION puntocoma .
+
+    $default  reduce usando la regla 39 (DECLARACION)
+
+
+Estado 139
+
+   37 DECLARACION: TIPO_DATO LISTA_ID tk_igual CONT_VALOR puntocoma .
+
+    $default  reduce usando la regla 37 (DECLARACION)
+
+
+Estado 140
+
+   23 MOSTRAR: tk_show pari CONT_VALOR coma LISTA_VALORES pard . puntocoma
+
+    puntocoma  desplazar e ir al estado 148
+
+
+Estado 141
+
+   88 ELSE: llaved . tk_else SI
+   89     | llaved . tk_else llavei LISTA_CUERPO llaved
+   90     | llaved . tk_else llavei llaved
+   91     | llaved .
+
+    tk_else  desplazar e ir al estado 149
+
+    $default  reduce usando la regla 91 (ELSE)
+
+
+Estado 142
+
+    2 LISTA_CUERPO: LISTA_CUERPO . CUERPO
+   86 SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO . ELSE
+
+    tk_int         desplazar e ir al estado 6
+    tk_double      desplazar e ir al estado 7
+    tk_bool        desplazar e ir al estado 8
+    tk_char        desplazar e ir al estado 9
+    tk_string      desplazar e ir al estado 10
+    identificador  desplazar e ir al estado 11
+    entero         desplazar e ir al estado 12
+    decimal        desplazar e ir al estado 13
+    caracter       desplazar e ir al estado 14
+    booleano       desplazar e ir al estado 15
+    cadena         desplazar e ir al estado 16
+    pari           desplazar e ir al estado 17
+    menos          desplazar e ir al estado 18
+    llaved         desplazar e ir al estado 141
     tk_imprimir    desplazar e ir al estado 19
     tk_show        desplazar e ir al estado 20
     tk_if          desplazar e ir al estado 21
@@ -2152,32 +2193,32 @@ Estado 138
     VALOR              ir al estado 44
     LISTA_IF           ir al estado 45
     SI                 ir al estado 46
-    ELSE               ir al estado 146
+    ELSE               ir al estado 150
 
 
-Estado 139
+Estado 143
 
-   84 SI: tk_if pari CONT_VALOR pard llavei ELSE .
+   87 SI: tk_if pari CONT_VALOR pard llavei ELSE .
 
-    $default  reduce usando la regla 84 (SI)
+    $default  reduce usando la regla 87 (SI)
 
 
-Estado 140
+Estado 144
 
    17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION . pard llavei LISTA_CUERPO llaved
    18    | tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION . pard llavei llaved
 
-    pard  desplazar e ir al estado 147
+    pard  desplazar e ir al estado 151
 
 
-Estado 141
+Estado 145
 
    14 REPETIR: tk_repetir pari CONT_VALOR pard llavei llaved .
 
     $default  reduce usando la regla 14 (REPETIR)
 
 
-Estado 142
+Estado 146
 
     2 LISTA_CUERPO: LISTA_CUERPO . CUERPO
    13 REPETIR: tk_repetir pari CONT_VALOR pard llavei LISTA_CUERPO . llaved
@@ -2195,7 +2236,7 @@ Estado 142
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 148
+    llaved         desplazar e ir al estado 152
     tk_imprimir    desplazar e ir al estado 19
     tk_show        desplazar e ir al estado 20
     tk_if          desplazar e ir al estado 21
@@ -2226,10 +2267,10 @@ Estado 142
     SI                 ir al estado 46
 
 
-Estado 143
+Estado 147
 
-   37 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei . ARRAY llaved puntocoma
-   38            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei . LISTA_FILA llaved puntocoma
+   40 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei . ARRAY llaved puntocoma
+   41            | TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei . LISTA_FILA llaved puntocoma
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -2239,61 +2280,61 @@ Estado 143
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llavei         desplazar e ir al estado 149
+    llavei         desplazar e ir al estado 153
 
-    ARRAY       ir al estado 150
-    LISTA_FILA  ir al estado 151
-    CONT_VALOR  ir al estado 152
+    ARRAY       ir al estado 154
+    LISTA_FILA  ir al estado 155
+    CONT_VALOR  ir al estado 156
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
     VALOR       ir al estado 44
 
 
-Estado 144
+Estado 148
 
-   23 MOSTRAR: tk_show pari CONT_VALOR coma CONT_VALOR pard puntocoma .
+   23 MOSTRAR: tk_show pari CONT_VALOR coma LISTA_VALORES pard puntocoma .
 
     $default  reduce usando la regla 23 (MOSTRAR)
 
 
-Estado 145
+Estado 149
 
-   85 ELSE: llaved tk_else . SI
-   86     | llaved tk_else . llavei LISTA_CUERPO llaved
-   87     | llaved tk_else . llavei llaved
+   88 ELSE: llaved tk_else . SI
+   89     | llaved tk_else . llavei LISTA_CUERPO llaved
+   90     | llaved tk_else . llavei llaved
 
-    llavei  desplazar e ir al estado 153
+    llavei  desplazar e ir al estado 157
     tk_if   desplazar e ir al estado 21
 
-    SI  ir al estado 154
+    SI  ir al estado 158
 
 
-Estado 146
+Estado 150
 
-   83 SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO ELSE .
+   86 SI: tk_if pari CONT_VALOR pard llavei LISTA_CUERPO ELSE .
 
-    $default  reduce usando la regla 83 (SI)
+    $default  reduce usando la regla 86 (SI)
 
 
-Estado 147
+Estado 151
 
    17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard . llavei LISTA_CUERPO llaved
    18    | tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard . llavei llaved
 
-    llavei  desplazar e ir al estado 155
+    llavei  desplazar e ir al estado 159
 
 
-Estado 148
+Estado 152
 
    13 REPETIR: tk_repetir pari CONT_VALOR pard llavei LISTA_CUERPO llaved .
 
     $default  reduce usando la regla 13 (REPETIR)
 
 
-Estado 149
+Estado 153
 
-   40 ARRAY: llavei . LISTA_FILA llaved
+   43 ARRAY: llavei . LISTA_FILA llaved
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -2304,43 +2345,43 @@ Estado 149
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    LISTA_FILA  ir al estado 156
-    CONT_VALOR  ir al estado 152
+    LISTA_FILA  ir al estado 160
+    CONT_VALOR  ir al estado 156
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
     VALOR       ir al estado 44
 
 
-Estado 150
+Estado 154
 
-   37 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY . llaved puntocoma
-   39 ARRAY: ARRAY . coma llavei LISTA_FILA llaved
+   40 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY . llaved puntocoma
+   42 ARRAY: ARRAY . coma llavei LISTA_FILA llaved
 
-    coma    desplazar e ir al estado 157
-    llaved  desplazar e ir al estado 158
-
-
-Estado 151
-
-   38 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA . llaved puntocoma
-   41 LISTA_FILA: LISTA_FILA . coma CONT_VALOR
-
-    coma    desplazar e ir al estado 159
-    llaved  desplazar e ir al estado 160
+    coma    desplazar e ir al estado 161
+    llaved  desplazar e ir al estado 162
 
 
-Estado 152
+Estado 155
 
-   42 LISTA_FILA: CONT_VALOR .
+   41 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA . llaved puntocoma
+   44 LISTA_FILA: LISTA_FILA . coma CONT_VALOR
 
-    $default  reduce usando la regla 42 (LISTA_FILA)
+    coma    desplazar e ir al estado 163
+    llaved  desplazar e ir al estado 164
 
 
-Estado 153
+Estado 156
 
-   86 ELSE: llaved tk_else llavei . LISTA_CUERPO llaved
-   87     | llaved tk_else llavei . llaved
+   45 LISTA_FILA: CONT_VALOR .
+
+    $default  reduce usando la regla 45 (LISTA_FILA)
+
+
+Estado 157
+
+   89 ELSE: llaved tk_else llavei . LISTA_CUERPO llaved
+   90     | llaved tk_else llavei . llaved
 
     tk_int         desplazar e ir al estado 6
     tk_double      desplazar e ir al estado 7
@@ -2355,14 +2396,14 @@ Estado 153
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 161
+    llaved         desplazar e ir al estado 165
     tk_imprimir    desplazar e ir al estado 19
     tk_show        desplazar e ir al estado 20
     tk_if          desplazar e ir al estado 21
     tk_para        desplazar e ir al estado 22
     tk_repetir     desplazar e ir al estado 23
 
-    LISTA_CUERPO       ir al estado 162
+    LISTA_CUERPO       ir al estado 166
     CUERPO             ir al estado 25
     LISTA_REPETIR      ir al estado 26
     REPETIR            ir al estado 27
@@ -2387,14 +2428,14 @@ Estado 153
     SI                 ir al estado 46
 
 
-Estado 154
+Estado 158
 
-   85 ELSE: llaved tk_else SI .
+   88 ELSE: llaved tk_else SI .
 
-    $default  reduce usando la regla 85 (ELSE)
+    $default  reduce usando la regla 88 (ELSE)
 
 
-Estado 155
+Estado 159
 
    17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard llavei . LISTA_CUERPO llaved
    18    | tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard llavei . llaved
@@ -2412,14 +2453,14 @@ Estado 155
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 163
+    llaved         desplazar e ir al estado 167
     tk_imprimir    desplazar e ir al estado 19
     tk_show        desplazar e ir al estado 20
     tk_if          desplazar e ir al estado 21
     tk_para        desplazar e ir al estado 22
     tk_repetir     desplazar e ir al estado 23
 
-    LISTA_CUERPO       ir al estado 164
+    LISTA_CUERPO       ir al estado 168
     CUERPO             ir al estado 25
     LISTA_REPETIR      ir al estado 26
     REPETIR            ir al estado 27
@@ -2444,32 +2485,32 @@ Estado 155
     SI                 ir al estado 46
 
 
-Estado 156
+Estado 160
 
-   40 ARRAY: llavei LISTA_FILA . llaved
-   41 LISTA_FILA: LISTA_FILA . coma CONT_VALOR
+   43 ARRAY: llavei LISTA_FILA . llaved
+   44 LISTA_FILA: LISTA_FILA . coma CONT_VALOR
 
-    coma    desplazar e ir al estado 159
-    llaved  desplazar e ir al estado 165
-
-
-Estado 157
-
-   39 ARRAY: ARRAY coma . llavei LISTA_FILA llaved
-
-    llavei  desplazar e ir al estado 166
+    coma    desplazar e ir al estado 163
+    llaved  desplazar e ir al estado 169
 
 
-Estado 158
+Estado 161
 
-   37 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved . puntocoma
+   42 ARRAY: ARRAY coma . llavei LISTA_FILA llaved
 
-    puntocoma  desplazar e ir al estado 167
+    llavei  desplazar e ir al estado 170
 
 
-Estado 159
+Estado 162
 
-   41 LISTA_FILA: LISTA_FILA coma . CONT_VALOR
+   40 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved . puntocoma
+
+    puntocoma  desplazar e ir al estado 171
+
+
+Estado 163
+
+   44 LISTA_FILA: LISTA_FILA coma . CONT_VALOR
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -2480,31 +2521,31 @@ Estado 159
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    CONT_VALOR  ir al estado 168
+    CONT_VALOR  ir al estado 172
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
     VALOR       ir al estado 44
 
 
-Estado 160
+Estado 164
 
-   38 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved . puntocoma
+   41 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved . puntocoma
 
-    puntocoma  desplazar e ir al estado 169
-
-
-Estado 161
-
-   87 ELSE: llaved tk_else llavei llaved .
-
-    $default  reduce usando la regla 87 (ELSE)
+    puntocoma  desplazar e ir al estado 173
 
 
-Estado 162
+Estado 165
+
+   90 ELSE: llaved tk_else llavei llaved .
+
+    $default  reduce usando la regla 90 (ELSE)
+
+
+Estado 166
 
     2 LISTA_CUERPO: LISTA_CUERPO . CUERPO
-   86 ELSE: llaved tk_else llavei LISTA_CUERPO . llaved
+   89 ELSE: llaved tk_else llavei LISTA_CUERPO . llaved
 
     tk_int         desplazar e ir al estado 6
     tk_double      desplazar e ir al estado 7
@@ -2519,7 +2560,7 @@ Estado 162
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 170
+    llaved         desplazar e ir al estado 174
     tk_imprimir    desplazar e ir al estado 19
     tk_show        desplazar e ir al estado 20
     tk_if          desplazar e ir al estado 21
@@ -2550,14 +2591,14 @@ Estado 162
     SI                 ir al estado 46
 
 
-Estado 163
+Estado 167
 
    18 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard llavei llaved .
 
     $default  reduce usando la regla 18 (FOR)
 
 
-Estado 164
+Estado 168
 
     2 LISTA_CUERPO: LISTA_CUERPO . CUERPO
    17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard llavei LISTA_CUERPO . llaved
@@ -2575,7 +2616,7 @@ Estado 164
     cadena         desplazar e ir al estado 16
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
-    llaved         desplazar e ir al estado 171
+    llaved         desplazar e ir al estado 175
     tk_imprimir    desplazar e ir al estado 19
     tk_show        desplazar e ir al estado 20
     tk_if          desplazar e ir al estado 21
@@ -2606,16 +2647,16 @@ Estado 164
     SI                 ir al estado 46
 
 
-Estado 165
+Estado 169
 
-   40 ARRAY: llavei LISTA_FILA llaved .
+   43 ARRAY: llavei LISTA_FILA llaved .
 
-    $default  reduce usando la regla 40 (ARRAY)
+    $default  reduce usando la regla 43 (ARRAY)
 
 
-Estado 166
+Estado 170
 
-   39 ARRAY: ARRAY coma llavei . LISTA_FILA llaved
+   42 ARRAY: ARRAY coma llavei . LISTA_FILA llaved
 
     identificador  desplazar e ir al estado 11
     entero         desplazar e ir al estado 12
@@ -2626,60 +2667,60 @@ Estado 166
     pari           desplazar e ir al estado 17
     menos          desplazar e ir al estado 18
 
-    LISTA_FILA  ir al estado 172
-    CONT_VALOR  ir al estado 152
+    LISTA_FILA  ir al estado 176
+    CONT_VALOR  ir al estado 156
     A           ir al estado 41
     OPERACION   ir al estado 42
     E           ir al estado 43
     VALOR       ir al estado 44
 
 
-Estado 167
-
-   37 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma .
-
-    $default  reduce usando la regla 37 (DECLARACION)
-
-
-Estado 168
-
-   41 LISTA_FILA: LISTA_FILA coma CONT_VALOR .
-
-    $default  reduce usando la regla 41 (LISTA_FILA)
-
-
-Estado 169
-
-   38 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma .
-
-    $default  reduce usando la regla 38 (DECLARACION)
-
-
-Estado 170
-
-   86 ELSE: llaved tk_else llavei LISTA_CUERPO llaved .
-
-    $default  reduce usando la regla 86 (ELSE)
-
-
 Estado 171
+
+   40 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei ARRAY llaved puntocoma .
+
+    $default  reduce usando la regla 40 (DECLARACION)
+
+
+Estado 172
+
+   44 LISTA_FILA: LISTA_FILA coma CONT_VALOR .
+
+    $default  reduce usando la regla 44 (LISTA_FILA)
+
+
+Estado 173
+
+   41 DECLARACION: TIPO_DATO tk_arreglo LISTA_ID LISTA_DIMENSION tk_igual llavei LISTA_FILA llaved puntocoma .
+
+    $default  reduce usando la regla 41 (DECLARACION)
+
+
+Estado 174
+
+   89 ELSE: llaved tk_else llavei LISTA_CUERPO llaved .
+
+    $default  reduce usando la regla 89 (ELSE)
+
+
+Estado 175
 
    17 FOR: tk_para pari FOR_COND CONT_VALOR puntocoma OPERACION pard llavei LISTA_CUERPO llaved .
 
     $default  reduce usando la regla 17 (FOR)
 
 
-Estado 172
+Estado 176
 
-   39 ARRAY: ARRAY coma llavei LISTA_FILA . llaved
-   41 LISTA_FILA: LISTA_FILA . coma CONT_VALOR
+   42 ARRAY: ARRAY coma llavei LISTA_FILA . llaved
+   44 LISTA_FILA: LISTA_FILA . coma CONT_VALOR
 
-    coma    desplazar e ir al estado 159
-    llaved  desplazar e ir al estado 173
+    coma    desplazar e ir al estado 163
+    llaved  desplazar e ir al estado 177
 
 
-Estado 173
+Estado 177
 
-   39 ARRAY: ARRAY coma llavei LISTA_FILA llaved .
+   42 ARRAY: ARRAY coma llavei LISTA_FILA llaved .
 
-    $default  reduce usando la regla 39 (ARRAY)
+    $default  reduce usando la regla 42 (ARRAY)
